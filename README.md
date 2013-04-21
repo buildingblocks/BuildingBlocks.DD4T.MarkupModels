@@ -4,7 +4,10 @@ Markup Models - User Guide
 This is a draft user guide for the BuildingBlocks.DD4T.MarkupModels project. It will explain how to use the library and the different options available.
 
 Author: Robert Stevenson-Leggett  
-Date: 15/04/2013
+Date: 15/04/2013  
+Version: 0.18
+
+The library can be installed from NuGet with `Install-Package BuildingBlocks.DD4T.MarkupModels -Pre`
 
 Concepts
 ========
@@ -98,8 +101,7 @@ Attributes available
 The following class attributes are available:
  
  * TridionViewModel
-
- Gives the SchemaTitle, whether this is a Nested model and if so the ComponentFieldName on it’s parent
+  * Gives the SchemaTitle, whether this is a Nested model and if so the ComponentFieldName on it’s parent
 
 The following property attributes are available:
 
@@ -147,10 +149,12 @@ Options available on Nested Component attributes
  * TargetType (mandatory)
   * The type of the sub ViewModel. This should be set like typeof(CaroselItemViewModel). This is needed to convert the type to the correct type (only really used when IsMultivalue is set to true.
 
-===How to make a Component Presentation InlineEditable===
+How to make a Component Presentation InlineEditable
+===================================================
 The Library adds a couple of HtmlHelper methods to make inline editting easier when using ViewModels.
 
-===To Mark the ComponentPresentation as inline editable===
+To Mark the ComponentPresentation as inline editable
+====================================================
 Do the following at the top of the View file within the first containing element.
 
     @model Project.Web.Models.Components.StepCarouselViewModel
