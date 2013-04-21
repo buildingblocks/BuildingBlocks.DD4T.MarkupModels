@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BuildingBlocks.DD4T.MarkupModels</id>
+    <version>$version$</version>
+    <title>BuildingBlocks.DD4T.MarkupModels</title>
+    <authors>Robert Stevenson-Leggett</authors>
+    <owners>Robert Stevenson-Leggett</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Automatic View Models for DD4T. Allows use of attributes to define mapping of IComponent to View Model classes.</description>
+    <releaseNotes>Added more support for different types of ComponentLink fields (rich text, datetime). Added HtmlHelper extension methods for Inline Editing (Site Edit and Experience Manager)</releaseNotes>
+    <copyright>Copyright 2013</copyright>
+    <tags>DD4T Tridion</tags>
+	<dependencies>
+      <dependency id="DD4TFramework" version="1.25" />
+    </dependencies>
+  </metadata>
+</package>

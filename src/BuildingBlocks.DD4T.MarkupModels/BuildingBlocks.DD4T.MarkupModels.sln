@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.DD4T.MarkupModels", "BuildingBlocks.DD4T.MarkupModels.csproj", "{45E69956-C2B3-43CA-BE84-4F0893AFAF55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.DD4T.MarkupModels.Tests", "..\BuildingBlocks.DD4T.MarkupModels.Tests\BuildingBlocks.DD4T.MarkupModels.Tests.csproj", "{93020ACD-6138-45A5-BE5D-B5BC954D9E1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45E69956-C2B3-43CA-BE84-4F0893AFAF55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E69956-C2B3-43CA-BE84-4F0893AFAF55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E69956-C2B3-43CA-BE84-4F0893AFAF55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E69956-C2B3-43CA-BE84-4F0893AFAF55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93020ACD-6138-45A5-BE5D-B5BC954D9E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93020ACD-6138-45A5-BE5D-B5BC954D9E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93020ACD-6138-45A5-BE5D-B5BC954D9E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93020ACD-6138-45A5-BE5D-B5BC954D9E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>DD4TFramework</id>
+    <version>1.25.0</version>
+    <title>DD4T Framework</title>
+    <authors>DD4T Team</authors>
+    <owners>DD4T Team</owners>
+    <projectUrl>http://code.google.com/p/dynamic-delivery-4-tridion/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Framework files for DD4T</description>
+    <summary>The DD4T Framework files</summary>
+    <references>
+      <reference file="DD4T.ContentModel.Contracts.dll" />
+      <reference file="DD4T.ContentModel.dll" />
+      <reference file="DD4T.Factories.dll" />
+      <reference file="DD4T.Mvc.dll" />
+      <reference file="DD4T.Providers.SDLTridion2011sp1.dll" />
+      <reference file="DD4T.Utils.dll" />
+    </references>
+  </metadata>
+</package>
