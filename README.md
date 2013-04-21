@@ -1,11 +1,13 @@
-=Markup Models - User Guide=
+Markup Models - User Guide
+==========================
 
 This is a draft user guide for the BuildingBlocks.DD4T.MarkupModels project. It will explain how to use the library and the different options available.
 
 Author: Robert Stevenson-Leggett  
 Date: 15/04/2013
 
-===Concepts===
+Concepts
+========
 The aims of MarkupModels are: 1) to remove any logic for mapping IComponent to a POCO ViewModel from the application and 2) simplify the addition of Inline Editable markup (for Experience Manager or Site Edit).
 
 The main concept is the addition of attributes to the model in order to define the mapping at compile time. The actual mapping happens at run time.
@@ -90,7 +92,9 @@ A nested scenario might look like:
     }
 
 
-==Attributes available==
+Attributes available
+====================
+
 The following class attributes are available:
  
  * TridionViewModel
@@ -201,5 +205,6 @@ For Multivalue submodels the pass the index
     </div>
 Note that there is no need to pass the model in this case.
 
-===Unsupported Schema Field types===
+Unsupported Schema Field types
+==============================
 Embedded Schemas
