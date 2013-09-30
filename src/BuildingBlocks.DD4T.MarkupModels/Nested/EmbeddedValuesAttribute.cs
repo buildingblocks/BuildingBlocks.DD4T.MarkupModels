@@ -1,31 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
 using DD4T.ContentModel;
 
-namespace BuildingBlocks.DD4T.MarkupModels
+namespace BuildingBlocks.DD4T.MarkupModels.Nested
 {
     ///<summary>
     /// EmbeddedValuesAttribute is responsible for PURPOSE
     /// Author: Robert Stevenson-Leggett
     /// Date: 2013-04-09
     ///</summary>
-    [Obsolete]
-    internal class EmbeddedValuesAttribute : BaseNestedTridionViewModelPropertyAttribute
+    public class EmbeddedValuesAttribute : BaseNestedTridionViewModelPropertyAttribute
     {
         public EmbeddedValuesAttribute(string schemaFieldName, Type targetType)
             : base(schemaFieldName, targetType)
         {
         }
 
-        public override object GetValue(IComponent component)
+        public override object GetValue(IFieldSet fields)
         {
-            throw new System.NotImplementedException();
+            var embeddedFieldSet = fields.GetEmbeddedFieldSet(SchemaFieldName);
+            if (embeddedFieldSet != null)
+            {
+                return ComponentViewModelBuilder.Build(embeddedFieldSet, TargetType);
+            }
+            return null;
         }
 
-        public override IEnumerable<object> GetMultiValue(IComponent component)
+        public override object GetValue(IComponent source)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<object> GetMultiValue(IFieldSet fields)
+        {
+            var embeddedFieldSets = fields.GetEmbeddedFieldSetMultiValue(SchemaFieldName);
+
+            return embeddedFieldSets.Select(fieldSet => ComponentViewModelBuilder.Build(fieldSet, TargetType));
         }
     }
 }

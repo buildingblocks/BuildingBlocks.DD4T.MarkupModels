@@ -17,14 +17,19 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override DateTime GetValue(IComponent component)
+        public override DateTime GetValue(IFieldSet fields)
         {
-            return component.GetDateTimeValue(SchemaFieldName,IsMetadata);
+            return fields.GetDateTimeValue(SchemaFieldName);
         }
 
-        public override IEnumerable<DateTime> GetMultiValue(IComponent component)
+        public override DateTime GetValue(IComponent source)
         {
-            return component.GetDateTimeMultiValue(SchemaFieldName, IsMetadata);
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<DateTime> GetMultiValue(IFieldSet source)
+        {
+            return source.GetDateTimeMultiValue(SchemaFieldName);
         }
     }
 }

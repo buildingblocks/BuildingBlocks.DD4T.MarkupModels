@@ -22,13 +22,13 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override string GetValue(IComponent component)
+        public override string GetValue(IFieldSet fields)
         {
-            if (component.Fields.ContainsKey(SchemaFieldName))
+            if (fields.ContainsKey(SchemaFieldName))
             {
-                if (component.Fields[SchemaFieldName].LinkedComponentValues.Count > 0)
+                if (fields[SchemaFieldName].LinkedComponentValues.Count > 0)
                 {
-                    var linkedComponent = component.Fields[SchemaFieldName].LinkedComponentValues[0];
+                    var linkedComponent = fields[SchemaFieldName].LinkedComponentValues[0];
                     if(linkedComponent.Fields.ContainsKey(ComponentFieldName))
                     {
                         return linkedComponent.Fields[ComponentFieldName].LinkedComponentValues[0].Multimedia.Url;
@@ -38,12 +38,17 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return string.Empty;
         }
 
-        public override IEnumerable<string> GetMultiValue(IComponent component)
+        public override string GetValue(IComponent fields)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<string> GetMultiValue(IFieldSet fields)
         {
             List<string> values = new List<string>();
-            if(component.Fields.ContainsKey(SchemaFieldName))
+            if(fields.ContainsKey(SchemaFieldName))
             {
-                var linkedComponent = component.Fields[SchemaFieldName].LinkedComponentValues[0];
+                var linkedComponent = fields[SchemaFieldName].LinkedComponentValues[0];
                 
                 if (linkedComponent.Fields.ContainsKey(ComponentFieldName))
                 {

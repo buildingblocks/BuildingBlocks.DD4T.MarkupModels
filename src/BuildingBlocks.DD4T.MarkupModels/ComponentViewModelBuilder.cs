@@ -12,16 +12,38 @@ namespace BuildingBlocks.DD4T.MarkupModels
         public static T Build<T>(IComponent source) where T : new()
         {
             var destinationModel = new T();
-            return (T)Build(source, destinationModel);
-        }
+            var obj = (T)Build(source.Fields, source.MetadataFields, destinationModel, source);
+            if (obj is IComponentBase)
+            {
+                obj.GetType().GetProperty("ComponentId").SetValue(obj, source.Id, null);
+            }
+            return obj;
+        }        
 
         public static object Build(IComponent source, Type targetType)
         {
             var destinationModel = Activator.CreateInstance(targetType);
-            return Build(source, destinationModel);
+            var obj = Build(source.Fields, source.MetadataFields, destinationModel, source);
+            if (obj is IComponentBase)
+            {
+                obj.GetType().GetProperty("ComponentId").SetValue(obj, source.Id, null);
+            }
+            return obj;
         }
 
-        private static object Build(IComponent source, object destinationModel)
+        internal static T Build<T>(IFieldSet source) where T : new()
+        {
+            var destinationModel = new T();
+            return (T)Build(source, null, destinationModel, null);
+        }
+
+        internal static object Build(IFieldSet source, Type targetType)
+        {
+            var destinationModel = Activator.CreateInstance(targetType);
+            return Build(source, null, destinationModel, null);
+        }
+
+        private static object Build(IFieldSet sourceFields, IFieldSet sourceMetadataFields, object destinationModel, IComponent source)
         {
             var type = destinationModel.GetType();
             var properties = type.GetProperties();
@@ -37,19 +59,26 @@ namespace BuildingBlocks.DD4T.MarkupModels
                         continue;
                     }
 
-                    if(tridionAttribute.IsMultiValue)
+                    var fields = tridionAttribute.IsMetadata ? sourceMetadataFields : sourceFields;
+
+                    if (tridionAttribute.SchemaFieldName == String.Empty && source != null)
                     {
-                        TrySetMultiValueProperty<bool>(property, destinationModel, source, tridionAttribute);
-                        TrySetMultiValueProperty<DateTime>(property, destinationModel, source, tridionAttribute);
-                        TrySetMultiValueProperty<string>(property, destinationModel, source, tridionAttribute);
-                        TrySetMultiValueProperty<object>(property, destinationModel, source, tridionAttribute);
+                        //Multimedia object
+                        TrySetProperty<object>(property, destinationModel, source, tridionAttribute);
+                    }
+                    else if (tridionAttribute.IsMultiValue)
+                    {
+                        TrySetMultiValueProperty<bool>(property, destinationModel, fields, tridionAttribute);
+                        TrySetMultiValueProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
+                        TrySetMultiValueProperty<string>(property, destinationModel, fields, tridionAttribute);
+                        TrySetMultiValueProperty<object>(property, destinationModel, fields, tridionAttribute);                            
                     }
                     else
                     {
-                        TrySetProperty<bool>(property, destinationModel, source, tridionAttribute);
-                        TrySetProperty<DateTime>(property, destinationModel, source, tridionAttribute);
-                        TrySetProperty<string>(property, destinationModel, source, tridionAttribute);
-                        TrySetProperty<object>(property, destinationModel, source, tridionAttribute);
+                        TrySetProperty<bool>(property, destinationModel, fields, tridionAttribute);
+                        TrySetProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
+                        TrySetProperty<string>(property, destinationModel, fields, tridionAttribute);
+                        TrySetProperty<object>(property, destinationModel, fields, tridionAttribute);
                     }
                 }
             }
@@ -57,19 +86,28 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return destinationModel;
         }
 
-        private static void TrySetProperty<T>(PropertyInfo property, object destinationModel, IComponent source, ITridionViewModelPropertyAttribute tridionAttribute)
+        private static void TrySetProperty<T>(PropertyInfo property, object destinationModel, IFieldSet source, ITridionViewModelPropertyAttribute tridionAttribute)
         {
             T value;
-            if (TryResolveViewModelProperty(source, tridionAttribute, out value))
+            if (source!=null && TryResolveViewModelProperty(source, tridionAttribute, out value))
             {
                 property.SetValue(destinationModel, value, null);
             }
         }
 
-        private static void TrySetMultiValueProperty<T>(PropertyInfo property, object destinationModel, IComponent source, ITridionViewModelPropertyAttribute tridionAttribute)
+        private static void TrySetProperty<T>(PropertyInfo property, object destinationModel, IComponent source, ITridionViewModelPropertyAttribute tridionAttribute)
+        {
+            T value;
+            if (source != null && TryResolveViewModelProperty(source, tridionAttribute, out value))
+            {
+                property.SetValue(destinationModel, value, null);
+            }
+        }
+
+        private static void TrySetMultiValueProperty<T>(PropertyInfo property, object destinationModel, IFieldSet source, ITridionViewModelPropertyAttribute tridionAttribute)
         {
             IEnumerable<T> value;
-            if (TryResolveMultiValueViewModelProperty(source, tridionAttribute, out value))
+            if (source != null && TryResolveMultiValueViewModelProperty(source, tridionAttribute, out value))
             {
                 if (tridionAttribute is BaseNestedTridionViewModelPropertyAttribute)
                 {
@@ -87,7 +125,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             }
         }
 
-        private static bool TryResolveViewModelProperty<T>(IComponent source, ITridionViewModelPropertyAttribute attribute, out T value)
+        private static bool TryResolveViewModelProperty<T>(IFieldSet source, ITridionViewModelPropertyAttribute attribute, out T value)
         {
             value = default(T);
             var objAttribute = attribute as ITridionViewModelPropertyAttribute<T>;
@@ -98,7 +136,18 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return objAttribute != null;
         }
 
-        private static bool TryResolveMultiValueViewModelProperty<T>(IComponent source, ITridionViewModelPropertyAttribute attribute, out IEnumerable<T> values)
+        private static bool TryResolveViewModelProperty<T>(IComponent source, ITridionViewModelPropertyAttribute attribute, out T value)
+        {
+            value = default(T);
+            var objAttribute = attribute as ITridionViewModelPropertyAttribute<T>;
+            if (objAttribute != null)
+            {
+                value = objAttribute.GetValue(source);
+            }
+            return objAttribute != null;
+        }
+
+        private static bool TryResolveMultiValueViewModelProperty<T>(IFieldSet source, ITridionViewModelPropertyAttribute attribute, out IEnumerable<T> values)
         {
             values = null;
             var objAttribute = attribute as ITridionViewModelPropertyAttribute<T>;

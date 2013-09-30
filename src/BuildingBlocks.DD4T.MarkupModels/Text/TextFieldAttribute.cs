@@ -21,14 +21,19 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override string GetValue(IComponent component)
+        public override string GetValue(IFieldSet fields)
         {
-            return component.GetValue(SchemaFieldName, IsMetadata);
+            return fields.GetValue(SchemaFieldName);
         }
 
-        public override IEnumerable<string> GetMultiValue(IComponent component)
+        public override string GetValue(IComponent fields)
         {
-            return component.GetMultiValue(SchemaFieldName, IsMetadata);
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<string> GetMultiValue(IFieldSet fields)
+        {
+            return fields.GetMultiValue(SchemaFieldName);
         }
     }
 }

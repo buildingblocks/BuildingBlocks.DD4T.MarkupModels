@@ -25,8 +25,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
             SchemaFieldName = schemaFieldName;
         }
 
-        public abstract DateTime GetValue(IComponent component);
+        public abstract DateTime GetValue(IFieldSet fields);
 
-        public abstract IEnumerable<DateTime> GetMultiValue(IComponent source);
+        public abstract DateTime GetValue(IComponent source);
+
+        public abstract IEnumerable<DateTime> GetMultiValue(IFieldSet source);
     }
 }

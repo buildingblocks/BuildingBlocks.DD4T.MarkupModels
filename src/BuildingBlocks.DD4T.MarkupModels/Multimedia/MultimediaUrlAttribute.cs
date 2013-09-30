@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using DD4T.ContentModel;
@@ -12,30 +13,51 @@ namespace BuildingBlocks.DD4T.MarkupModels
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class MultimediaUrlAttribute : BaseStringTridionViewModelPropertyAttribute
     {
+        public MultimediaUrlAttribute() : base(String.Empty)
+        {
+        }
+
         public MultimediaUrlAttribute(string schemaFieldName) : base(schemaFieldName)
         {
         }
 
-        public override string GetValue(IComponent component)
+        public override string GetValue(IFieldSet fields)
         {
             var stringBuilder = new StringBuilder();
-            if (component.Fields.ContainsKey(SchemaFieldName))
+            if (fields.ContainsKey(SchemaFieldName))
             {
-                if (component.Fields[SchemaFieldName].LinkedComponentValues.Count > 0)
+                if (fields[SchemaFieldName].LinkedComponentValues.Count > 0)
                 {
-                    var linkedComponent = component.Fields[SchemaFieldName].LinkedComponentValues[0];
+                    var linkedComponent = fields[SchemaFieldName].LinkedComponentValues[0];
                     stringBuilder.Append(linkedComponent.Multimedia.Url);
                 }
             }
             return stringBuilder.ToString();
         }
 
-        public override IEnumerable<string> GetMultiValue(IComponent component)
+        public override string GetValue(IComponent source)
         {
-            List<string> values = new List<string>();
-            if(component.Fields.ContainsKey(SchemaFieldName))
+            var stringBuilder = new StringBuilder();
+            if(SchemaFieldName == String.Empty && source != null)
             {
-                foreach(var linkedComponent in component.Fields[SchemaFieldName].LinkedComponentValues)
+                if (source.Multimedia != null) stringBuilder.Append(source.Multimedia.Url);
+            }
+            return stringBuilder.ToString();
+        }
+
+        public override IEnumerable<string> GetMultiValue(IFieldSet source)
+        {
+            var values = new List<string>();
+            if(source.ContainsKey(SchemaFieldName))
+            {
+                foreach(var linkedComponent in source[SchemaFieldName].LinkedComponentValues)
+                {
+                    values.Add(linkedComponent.Multimedia.Url);
+                }
+            }
+            else if(SchemaFieldName == "" && source.Count > 0)
+            {
+                foreach (var linkedComponent in source.First().Value.LinkedComponentValues)
                 {
                     values.Add(linkedComponent.Multimedia.Url);
                 }

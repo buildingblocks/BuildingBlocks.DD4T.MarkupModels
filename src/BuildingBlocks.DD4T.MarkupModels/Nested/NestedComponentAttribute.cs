@@ -18,15 +18,24 @@ namespace BuildingBlocks.DD4T.MarkupModels.Nested
         {
         }
 
-        public override object GetValue(IComponent component)
+        public override object GetValue(IFieldSet fields)
         {
-            var linkedComponent = component.GetLinkedComponent(SchemaFieldName, IsMetadata);
-            return ComponentViewModelBuilder.Build(linkedComponent, TargetType);
+            var linkedComponent = fields.GetLinkedComponent(SchemaFieldName);
+            if (linkedComponent != null)
+            {
+                return ComponentViewModelBuilder.Build(linkedComponent, TargetType);
+            }
+            return null;
         }
 
-        public override IEnumerable<object> GetMultiValue(IComponent component)
+        public override object GetValue(IComponent source)
         {
-            var linkedComponents = component.GetLinkedComponentMultiValue(SchemaFieldName, IsMetadata);
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<object> GetMultiValue(IFieldSet fields)
+        {
+            var linkedComponents = fields.GetLinkedComponentMultiValue(SchemaFieldName);
 
             return linkedComponents.Select(comp => ComponentViewModelBuilder.Build(comp, TargetType));
         }

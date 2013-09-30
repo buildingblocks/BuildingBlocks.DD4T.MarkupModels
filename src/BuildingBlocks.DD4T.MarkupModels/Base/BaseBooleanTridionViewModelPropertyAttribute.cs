@@ -24,9 +24,11 @@ namespace BuildingBlocks.DD4T.MarkupModels
             SchemaFieldName = schemaFieldName;
         }
 
-        public abstract bool GetValue(IComponent component);
+        public abstract bool GetValue(IFieldSet fields);
 
-        public abstract IEnumerable<bool> GetMultiValue(IComponent source);
+        public abstract bool GetValue(IComponent source);
+
+        public abstract IEnumerable<bool> GetMultiValue(IFieldSet source);
 
         protected bool ParseString(string value)
         {

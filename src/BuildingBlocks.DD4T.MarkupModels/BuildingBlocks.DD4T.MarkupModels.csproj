@@ -33,6 +33,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DD4T.ContentModel, Version=1.25.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\DD4T.ContentModel.dll</HintPath>
+    </Reference>
     <Reference Include="DD4T.ContentModel.Contracts">
       <HintPath>packages\DD4TFramework.1.25.0\lib\DD4T.ContentModel.Contracts.dll</HintPath>
     </Reference>
@@ -54,7 +58,10 @@
     <Compile Include="Base\BaseDateTimeTridionViewModelPropertyAttribute.cs" />
     <Compile Include="Base\BaseNestedTridionViewModelPropertyAttribute.cs" />
     <Compile Include="Boolean\BooleanTextField.cs" />
+    <Compile Include="ExtensionMethods\ParentLinkTypeEnum.cs" />
     <Compile Include="ExtensionMethods\RichTextHelper.cs" />
+    <Compile Include="Interfaces\IComponentBase.cs" />
+    <Compile Include="Text\InternalOrExternalLinkAttribute.cs" />
     <Compile Include="Multimedia\MultimediaUrlAttribute.cs" />
     <Compile Include="RichText\RichTextComponentLinkFieldAttribute.cs" />
     <Compile Include="DateTime\DateTimeComponentLinkFieldAttribute.cs" />
@@ -66,7 +73,7 @@
     <Compile Include="Base\BaseBooleanTridionViewModelPropertyAttribute.cs" />
     <Compile Include="DateTime\DateTimeFieldAttribute.cs" />
     <Compile Include="Nested\EmbeddedValuesAttribute.cs" />
-    <Compile Include="ExtensionMethods\IComponentExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\IFieldSetExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensionMethods.cs" />
     <Compile Include="Interfaces\ITridionViewModelPropertyAttribute.cs" />
     <Compile Include="Multimedia\MultimediaUrlComponentLinkedAttribute.cs" />

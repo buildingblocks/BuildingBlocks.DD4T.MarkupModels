@@ -25,15 +25,20 @@ namespace BuildingBlocks.DD4T.MarkupModels
             ComponentFieldName = componentExpression;
         }
 
-        public override bool GetValue(IComponent component)
+        public override bool GetValue(IFieldSet fields)
         {
-            string value = component.GetComponentLinkedValue(SchemaFieldName, IsMetadata, ComponentFieldName);
+            string value = fields.GetComponentLinkedValue(SchemaFieldName, IsLinkedFieldMetadata, ComponentFieldName);
             return ParseString(value);
         }
 
-        public override IEnumerable<bool> GetMultiValue(IComponent component)
+        public override bool GetValue(IComponent source)
         {
-            var values = component.GetComponentLinkedMultiValue(SchemaFieldName, IsMetadata, ComponentFieldName);
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<bool> GetMultiValue(IFieldSet source)
+        {
+            var values = source.GetComponentLinkedMultiValue(SchemaFieldName, IsLinkedFieldMetadata, ComponentFieldName);
             return values.Select(ParseString).ToList();
         }
     }

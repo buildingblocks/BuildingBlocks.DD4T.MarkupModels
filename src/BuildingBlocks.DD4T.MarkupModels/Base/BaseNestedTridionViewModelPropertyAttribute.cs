@@ -28,8 +28,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
             TargetType = targetType;
         }
 
-        public abstract object GetValue(IComponent component);
+        public abstract object GetValue(IFieldSet fields);
 
-        public abstract IEnumerable<object> GetMultiValue(IComponent component);
+        public abstract object GetValue(IComponent source);
+
+        public abstract IEnumerable<object> GetMultiValue(IFieldSet field);
     }
 }

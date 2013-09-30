@@ -18,6 +18,43 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
     {
         public static MvcHtmlString MarkComponentPresentationInlineEditable(this HtmlHelper helper)
         {
+            //return empty if this is a nested component
+            var attribute = (TridionViewModelAttribute)helper.ViewData.Model.GetType().GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
+            if (attribute != null && !String.IsNullOrEmpty(attribute.ParentLinkFieldName))
+            {
+                var parentComponentPresentation = GetComponentPresentation(helper);
+                IComponent linkedComponent = null;
+
+                // todo: try and reduce this nested if to make it prettier
+                if (parentComponentPresentation != null)
+                {
+                    if (parentComponentPresentation.Component != null)
+                    {
+                        if (parentComponentPresentation.Component.Fields != null)
+                        {
+                            if (parentComponentPresentation.Component.Fields.ContainsKey(attribute.ParentLinkFieldName))
+                            {
+                                if (parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName] != null)
+                                {
+                                    if (parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName].LinkedComponentValues != null)
+                                    {
+                                        if (parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName].LinkedComponentValues.Count > 0)
+                                        {
+                                            linkedComponent = parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName].LinkedComponentValues[0];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (linkedComponent != null)
+                {
+                    return new MvcHtmlString(string.Empty);
+                }
+            }
+
             var componentPresentation = GetComponentPresentation(helper);
                 
             if(componentPresentation != null)
@@ -30,20 +67,34 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         public static MvcHtmlString MarkComponentPresentationInlineEditable<T>(this HtmlHelper helper, T model, int index)
         {
-            var attribute = (TridionViewModelAttribute)typeof(T).GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
-            if (attribute!=null && !String.IsNullOrEmpty(attribute.ParentComponentLinkFieldName))
+            var attribute = (TridionViewModelAttribute)model.GetType().GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
+            if (attribute != null && !String.IsNullOrEmpty(attribute.ParentLinkFieldName) &&
+                attribute.ParentLinkType != ParentLinkType.Multimedia)
             {
                 var parentComponentPresentation = GetComponentPresentation(helper);
-                var linkedComponent = parentComponentPresentation.Component.Fields[attribute.ParentComponentLinkFieldName]
-                    .LinkedComponentValues[index];
 
-                if (linkedComponent != null)
+                foreach (string parentLinkFieldName in attribute.ParentLinkFieldName.Split(','))
                 {
-                    return helper.SiteEditComponentPresentation(linkedComponent,
-                                                                parentComponentPresentation.ComponentTemplate.Id, false,
-                                                                string.Empty);
+                    IComponent linkedComponent = null;
+                    if (parentComponentPresentation.Component.Fields.ContainsKey(parentLinkFieldName))
+                    {
+                        linkedComponent =
+                            parentComponentPresentation.Component.Fields[parentLinkFieldName].LinkedComponentValues[
+                                index];
+                    }
+                    if (linkedComponent != null)
+                    {
+                        return helper.SiteEditComponentPresentation(linkedComponent,
+                                                                    parentComponentPresentation.ComponentTemplate.Id,
+                                                                    false,
+                                                                    string.Empty);
+                        break;
+                    }
                 }
-
+            }
+            else
+            {
+                return MarkComponentPresentationInlineEditable(helper);
             }
             return new MvcHtmlString(string.Empty);
         }
@@ -110,18 +161,36 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
                         var viewModelAttribute = (TridionViewModelAttribute)member.Member.DeclaringType.GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
                         IFieldSet fields;
                         var component = componentPresentation.Component;
-                        if (viewModelAttribute != null && viewModelAttribute.Nested)
+                        if (viewModelAttribute != null && viewModelAttribute.ParentLinkType!=ParentLinkType.None)
                         {
-                            if (componentPresentation.Component.Fields.ContainsKey(viewModelAttribute.ParentComponentLinkFieldName))
+                            fields = attribute.IsMetadata ? componentPresentation.Component.MetadataFields : componentPresentation.Component.Fields;    
+                            foreach (string parentLinkFieldName in viewModelAttribute.ParentLinkFieldName.Split(','))
                             {
-                                var linkedComponent =
-                                    componentPresentation.Component.Fields[
-                                        viewModelAttribute.ParentComponentLinkFieldName].LinkedComponentValues[index];
-                                fields = linkedComponent.Fields;
-                            }
-                            else
-                            {
-                                return new MvcHtmlString(string.Empty);
+                                if (
+                                    componentPresentation.Component.Fields.ContainsKey(
+                                        parentLinkFieldName) &&
+                                    viewModelAttribute.ParentLinkType != ParentLinkType.Multimedia)
+                                {
+                                    if (viewModelAttribute.ParentLinkType == ParentLinkType.Nested)
+                                    {
+                                        var linkedComponent =
+                                            componentPresentation.Component.Fields[parentLinkFieldName].LinkedComponentValues[index
+                                                ];
+                                        fields = linkedComponent.Fields;
+                                    }
+                                    else
+                                    {
+                                        fields =
+                                            componentPresentation.Component.Fields[parentLinkFieldName].EmbeddedValues[index];
+                                    }
+                                    break;
+                                }
+                                else
+                                {
+                                    fields = attribute.IsMetadata
+                                                 ? componentPresentation.Component.MetadataFields
+                                                 : componentPresentation.Component.Fields;
+                                }
                             }
                         }
                         else
@@ -131,9 +200,19 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
                                          : componentPresentation.Component.Fields;    
                         }
 
-                        if(fields.ContainsKey(attribute.SchemaFieldName))
+                        string schemaFieldName = String.Empty;
+                        if (viewModelAttribute.ParentLinkType == ParentLinkType.Multimedia)
                         {
-                            var field = fields[attribute.SchemaFieldName];
+                            schemaFieldName = viewModelAttribute.ParentLinkFieldName;
+                        }
+                        else
+                        {
+                            schemaFieldName = attribute.SchemaFieldName;
+                        }
+
+                        if(fields.ContainsKey(schemaFieldName))
+                        {
+                            var field = fields[schemaFieldName];
 
                             if (attribute is IComponentLinkFieldTridionViewModelPropertyAttribute)
                             {

@@ -1,4 +1,5 @@
 using System;
+using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
 
 namespace BuildingBlocks.DD4T.MarkupModels
 {
@@ -9,8 +10,9 @@ namespace BuildingBlocks.DD4T.MarkupModels
     {
         public string SchemaTitle { get; set; }
 
-        public bool Nested { get; set; }
+        public ParentLinkType ParentLinkType { get; set; }
 
-        public string ParentComponentLinkFieldName { get; set; }
+        public string ParentLinkFieldName { get; set; }        
+
     }
 }

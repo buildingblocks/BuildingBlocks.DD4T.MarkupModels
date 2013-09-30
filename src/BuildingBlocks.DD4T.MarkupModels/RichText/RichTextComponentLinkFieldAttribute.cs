@@ -25,24 +25,29 @@ namespace BuildingBlocks.DD4T.MarkupModels
             ComponentFieldName = linkedComponentField;
         }
 
-        public override string GetValue(IComponent component)
+        public override string GetValue(IFieldSet fields)
         {
-            var linkedComponent = component.GetLinkedComponent(SchemaFieldName, IsMetadata);
+            var linkedComponent = fields.GetLinkedComponent(SchemaFieldName);
             if(linkedComponent != null)
             {
-                return linkedComponent.GetValue(ComponentFieldName, IsLinkedFieldMetadata).RemoveNamespacesAndWrapInParagraph().ResolveRichText().ToString();
+                return linkedComponent.Fields.GetValue(ComponentFieldName).RemoveNamespacesAndWrapInParagraph().ResolveRichText().ToString();
             }
             return string.Empty;
         }
 
-        public override IEnumerable<string> GetMultiValue(IComponent component)
+        public override string GetValue(IComponent fields)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<string> GetMultiValue(IFieldSet fields)
         {
             var result = new List<string>();
-            if (component.Fields.ContainsKey(SchemaFieldName))
+            if (fields.ContainsKey(SchemaFieldName))
             {
-                foreach(var linkedComponent in component.Fields[SchemaFieldName].LinkedComponentValues)
+                foreach(var linkedComponent in fields[SchemaFieldName].LinkedComponentValues)
                 {
-                    string value = linkedComponent.GetValue(ComponentFieldName, IsLinkedFieldMetadata);
+                    string value = linkedComponent.Fields.GetValue(ComponentFieldName);
                     result.Add(value.RemoveNamespacesAndWrapInParagraph().ResolveRichText().ToString());
                 }
             }
