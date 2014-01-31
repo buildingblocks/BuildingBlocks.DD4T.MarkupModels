@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,7 +58,10 @@
   <ItemGroup>
     <Compile Include="CarouselItemViewModel.cs" />
     <Compile Include="CarouselViewModel.cs" />
+    <Compile Include="EmbeddedCarouselItemViewModel.cs" />
+    <Compile Include="FakeDependencyResolver.cs" />
     <Compile Include="HeadingViewModel.cs" />
+    <Compile Include="PageMetaViewModelBuilderFixture.cs" />
     <Compile Include="ViewModelBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

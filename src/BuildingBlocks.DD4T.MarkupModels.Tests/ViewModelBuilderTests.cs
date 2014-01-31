@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
+
 using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
 using DD4T.ContentModel;
 using DD4T.ContentModel.Factories;
@@ -152,6 +154,34 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
             Assert.That(carouselModel.CarouselItemViewModels.Count(), Is.EqualTo(2));
             Assert.That(carouselModel.CarouselItemViewModels.First().Heading, Is.EqualTo("Slide 1"));
             Assert.That(carouselModel.CarouselItemViewModels.Skip(1).First().Heading, Is.EqualTo("Slide 2"));
+        }        
+        
+        [Test]
+        public void Builder_Can_Build_A_Carousel_Using_The_Embedded_Component_Attribute()
+        {
+            var slide1 = new FieldSet();
+            slide1.Add("heading", new Field() { Values = {"Slide 1"}});
+            slide1.Add("summary", new Field() { Values = {"Slide 1 Summary"}});
+            slide1.Add("image", new Field() { LinkedComponentValues = { new Component() { Multimedia = new Multimedia() { Url = "_images/asd.png" }}}});
+
+            var slide2 = new FieldSet();
+            slide2.Add("heading", new Field() { Values = { "Slide 2" } });
+            slide2.Add("summary", new Field() { Values = { "Slide 2 Summary" } });
+            slide2.Add("image", new Field() { LinkedComponentValues = { new Component() { Multimedia = new Multimedia() { Url = "_images/asdc.png" } } } });
+
+            var embeddedList = new List<FieldSet>();
+            embeddedList.Add(slide1);
+            embeddedList.Add(slide2);
+
+            var carousel = new Component();
+            carousel.Fields.Add("title", new Field() { Values = { "My Carousel" }});
+            carousel.Fields.Add("embedded_list", new Field() { EmbeddedValues = embeddedList});
+
+            var carouselModel = ComponentViewModelBuilder.Build<CarouselViewModel>(carousel);
+
+            Assert.That(carouselModel.EmbeddedCarouselItemViewModels.Count(), Is.EqualTo(2));
+            Assert.That(carouselModel.EmbeddedCarouselItemViewModels.First().Heading, Is.EqualTo("Slide 1"));
+            Assert.That(carouselModel.EmbeddedCarouselItemViewModels.Skip(1).First().Heading, Is.EqualTo("Slide 2"));
         }
 
         [Test]
@@ -169,6 +199,35 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
 
             //Assert
             Assert.That(model.Dates, Has.Count.EqualTo(2));
+        }
+
+        [Test]
+        public void Builder_Can_Build_A_Link()
+        {
+            var resolver = new FakeDependencyResolver();
+            resolver.LinkProviderMock.Setup(x => x.ResolveLink("tcm:1-2-3")).Returns("/index.html");
+            DependencyResolver.SetResolver(resolver);
+
+            var linkedComponent = new Component();
+            linkedComponent.Id = "tcm:1-2-3";
+
+            var component = new Component();
+            component.Fields.Add("component_link", new Field() { LinkedComponentValues = { linkedComponent } });
+
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+
+            Assert.That(model.Link, Is.EqualTo("/index.html"));
+        }
+
+        [Test]
+        public void Builder_Can_Build_an_external_link()
+        {
+            var component = new Component();
+            component.Fields.Add("component_link", new Field() { Values = { "http://www.google.co.uk" } });
+
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+
+            Assert.That(model.Link, Is.EqualTo("http://www.google.co.uk"));
         }
     }
 }

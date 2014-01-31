@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
+﻿using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
 
 namespace BuildingBlocks.DD4T.MarkupModels.Tests
 {
-    [TridionViewModel(SchemaTitle = "Carousel Item", ParentLinkType = ParentLinkType.Nested, ParentLinkFieldName = "list")]
-    public class CarouselItemViewModel
+    [TridionViewModel(SchemaTitle = "Carousel Item", ParentLinkType = ParentLinkType.Nested, ParentLinkFieldName = "embedded_list")]
+    public class EmbeddedCarouselItemViewModel
     {
         [TextField("heading")]
         public string Heading { get; set; }

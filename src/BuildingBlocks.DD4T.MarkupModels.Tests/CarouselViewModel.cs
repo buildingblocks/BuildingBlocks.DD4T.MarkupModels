@@ -15,6 +15,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
         public string Title { get; set; }
 
         [NestedComponent("list", typeof(CarouselItemViewModel), IsMultiValue = true)]
-        public IEnumerable<CarouselItemViewModel> CarouselItemViewModels { get; set; }
+        public IEnumerable<CarouselItemViewModel> CarouselItemViewModels { get; set; }        
+        
+        [EmbeddedValues("embedded_list", typeof(EmbeddedCarouselItemViewModel), IsMultiValue = true)]
+        public IEnumerable<EmbeddedCarouselItemViewModel> EmbeddedCarouselItemViewModels { get; set; }
     }
 }

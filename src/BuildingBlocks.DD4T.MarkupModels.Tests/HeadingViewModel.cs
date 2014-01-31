@@ -21,7 +21,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
         [MultimediaUrl("image")]
         public string ImageUrl { get; set; }
 
-        [TextComponentLinkField("image", "AltText", IsMetadata = true)]
+        [TextComponentLinkField("image", "AltText", IsLinkedFieldMetadata = true)]
         public string ImageAltText { get; set; }
 
         [TextComponentLinkField("link","link_url")]
@@ -50,5 +50,8 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
 
         [RichTextComponentLinkField("linked_rich_text", "body")]
         public string RichTextComponentLinkField { get; set; }
+
+        [InternalOrExternalLink("component_link")]
+        public string Link { get; set; }
     }
 }

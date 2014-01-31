@@ -133,7 +133,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         {
             if (fields.ContainsKey(schemaFieldName))
             {
-                if (fields[schemaFieldName].LinkedComponentValues.Count > 0)
+                if (fields[schemaFieldName].DateTimeValues.Count > 0)
                 {
                     return fields[schemaFieldName].DateTimeValues[0];
                 }
@@ -145,12 +145,42 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         {
             if (fields.ContainsKey(schemaFieldName))
             {
-                if (fields[schemaFieldName].LinkedComponentValues.Count > 0)
+                if (fields[schemaFieldName].DateTimeValues.Count > 0)
                 {
                     return fields[schemaFieldName].DateTimeValues;
                 }
             }
             return new List<DateTime>();
+        }
+
+
+        public static string GetKeywordUriValue(this IFieldSet fields, string schemaFieldName)
+        {
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                if (fields[schemaFieldName].Keywords.Count > 0)
+                {
+                    return fields[schemaFieldName].Keywords[0].Id;
+                }
+                
+            }
+            return null;
+        }
+
+        public static List<string> GetKeywordUriMultiValue(this IFieldSet fields, string schemaFieldName)
+        {
+            var result = new List<string>();
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                if (fields[schemaFieldName].Keywords.Count > 0)
+                {
+                    foreach (var keyword in fields[schemaFieldName].Keywords)
+                    {
+                        result.Add(keyword.Id);
+                    }
+                }
+            }
+            return result;
         }
     }
 }
