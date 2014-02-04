@@ -101,7 +101,7 @@ Attributes available
 The following class attributes are available:
  
  * TridionViewModel
-  * Gives the SchemaTitle, whether this is a Nested model and if so the ComponentFieldName on it’s parent
+  * Gives the SchemaTitle, whether this is a Nested model and if so the ComponentFieldName on itï¿½s parent
 
 The following property attributes are available:
 
@@ -114,7 +114,7 @@ The following property attributes are available:
  * RichTextComponentLinkField
   * A text field on a linked Component that will be mapped from that linked Component.
  * MultimediaUrl
-   * Gets a Multimedia Links’s Url
+   * Gets a Multimedia Linksï¿½s Url
  * MultimediaUrlComponentLink
    * Gets a Multimedia Url from a Linked component
  * DateTimeField
@@ -122,7 +122,7 @@ The following property attributes are available:
  * DateTimeComponentLinkField
    * Looks for the value in the DateTimeValues collection on a Linked IComponent
  * BooleanField
-   * Converts the value into a boolean (handles the case for “Yes”/”No”) keywords
+   * Converts the value into a boolean (handles the case for ï¿½Yesï¿½/ï¿½Noï¿½) keywords
  * BooleanComponentLinkField
    * Converts the value into a boolean from a component linked value
  * NestedComponent
@@ -131,7 +131,7 @@ The following property attributes are available:
 Options available on all attributes:
 
  * SchemaFieldName (string)
-  * This is mandatory and is the first argument in the attribute’s constructor. It indicates which field to look for on the IComponent’s fields (or metadata fields) collection
+  * This is mandatory and is the first argument in the attributeï¿½s constructor. It indicates which field to look for on the IComponentï¿½s fields (or metadata fields) collection
  * IsMetadata (bool)
   * Indicates the code should look in the MetadataFields collection rather than the Fields collection
  * InlineEditable (bool)
@@ -142,7 +142,7 @@ Options available on all attributes:
 Options available on Component Link attributes
 
  * ComponentFieldName (mandatory)
-  * The field name on the Linked Component to search in. E.g. if the Component used in our Component Presentation contained a Component Link field called “link” to an Internal Link Component with a property caled “link_url” The value of SchemaFieldName would be “link” and the value of ComponentFieldName would be “link_url”
+  * The field name on the Linked Component to search in. E.g. if the Component used in our Component Presentation contained a Component Link field called ï¿½linkï¿½ to an Internal Link Component with a property caled ï¿½link_urlï¿½ The value of SchemaFieldName would be ï¿½linkï¿½ and the value of ComponentFieldName would be ï¿½link_urlï¿½
 
 Options available on Nested Component attributes
 
@@ -169,12 +169,12 @@ To output the inline editable markup for a field on the root ViewModel use:
 
     <h1>@Html.InlineEditable(x => x.Title)</h1>
 
-Note that this also needs a containing element. If one does not exist. Try adding a div or span. This can be used inplace of the outputting of the value so you don’t need to repeat yourself.
+Note that this also needs a containing element. If one does not exist. Try adding a div or span. This can be used inplace of the outputting of the value so you donï¿½t need to repeat yourself.
 
 For submodels use:
 Submodels are a little more complicated. This is because we need to pass the item and if we are looping over a list, the index of the linked component in the IComponentPresentation
 
-    <div class=”items”>
+    <div class=ï¿½itemsï¿½>
     @{ int count = 0;} 
     @foreach(var item in Model.SubModels)
     {
@@ -189,26 +189,22 @@ Note that for this to work. The Submodel class must have the [TridionViewModel] 
 Also notice for multivalue nested components you need to pass an index for this to work. This is so that the correct component can be located on the LinkedComponentValues collection of the model.
 To just get the JSON markup without the value (e.g. for Image tags)
 
-    <div class=”imagemasksmall”>
+    <div class=ï¿½imagemasksmallï¿½>
         @Html.GetInlineEditableFieldMarkup(x=>x.Image)
-        <img src=”@Model.Image” alt=”@Model.ImageAltText” />
+        <img src=ï¿½@Model.Imageï¿½ alt=ï¿½@Model.ImageAltTextï¿½ />
     </div>
 
 For Multivalue submodels the pass the index
 
-    <div class=”items”>
+    <div class=ï¿½itemsï¿½>
     @{ int count = 0;} 
     @foreach(var item in Model.SubModels)
     {
-        <div class=”imagemasksmall”>
+        <div class=ï¿½imagemasksmallï¿½>
              @Html.GetInlineEditableFieldMarkup(x=>x.Image, count)
-             <img src=”@Model.Image” alt=”@Model.ImageAltText” />
+             <img src=ï¿½@Model.Imageï¿½ alt=ï¿½@Model.ImageAltTextï¿½ />
         </div>
    	    @{ count  = count +1; }
     }
     </div>
 Note that there is no need to pass the model in this case.
-
-Unsupported Schema Field types
-==============================
-Embedded Schemas
