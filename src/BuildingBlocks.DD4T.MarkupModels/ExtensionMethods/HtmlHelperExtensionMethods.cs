@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 using DD4T.ContentModel;
 using DD4T.Mvc.Html;
+using DD4T.Mvc.SiteEdit;
 
 namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 {
@@ -22,6 +23,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         /// </summary>
         public static MvcHtmlString MarkComponentPresentationInlineEditable(this HtmlHelper helper)
         {
+            if (!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
+
             var componentPresentation = GetComponentPresentation(helper);
                 
             if(componentPresentation != null)
@@ -45,6 +49,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         /// </summary>
         public static MvcHtmlString MarkComponentPresentationInlineEditable<T>(this HtmlHelper helper, T model, int index)
         {
+            if(!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
+
             var attribute = (TridionViewModelAttribute)model.GetType().GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
             if (attribute != null && !String.IsNullOrEmpty(attribute.ParentLinkFieldName) &&
                 attribute.ParentLinkType != ParentLinkType.Multimedia)
@@ -91,6 +98,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         private static MvcHtmlString InlineEditableInternal<T,TP>(this HtmlHelper helper, T model, Expression<Func<T, TP>> fieldSelector, int index)
         {
+            if (!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
+
             Func<T, TP> compiledFieldSelector = fieldSelector.Compile();
             TP value = compiledFieldSelector(model);
             var sb = new StringBuilder();
@@ -121,7 +131,10 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         private static MvcHtmlString GetInlineEditableMarkupInternal<T, TP>(HtmlHelper helper, Expression<Func<T, TP>> fieldSelector, int index)
         {
-             var componentPresentation = GetComponentPresentation(helper);
+            if (!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
+            
+            var componentPresentation = GetComponentPresentation(helper);
 
             if (componentPresentation != null)
             {
