@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 using DD4T.ContentModel;
 using DD4T.Mvc.Html;
+using DD4T.Mvc.SiteEdit;
 
 namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 {
@@ -18,42 +19,8 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
     {
         public static MvcHtmlString MarkComponentPresentationInlineEditable(this HtmlHelper helper)
         {
-            //return empty if this is a nested component
-            var attribute = (TridionViewModelAttribute)helper.ViewData.Model.GetType().GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
-            if (attribute != null && !String.IsNullOrEmpty(attribute.ParentLinkFieldName))
-            {
-                var parentComponentPresentation = GetComponentPresentation(helper);
-                IComponent linkedComponent = null;
-
-                // todo: try and reduce this nested if to make it prettier
-                if (parentComponentPresentation != null)
-                {
-                    if (parentComponentPresentation.Component != null)
-                    {
-                        if (parentComponentPresentation.Component.Fields != null)
-                        {
-                            if (parentComponentPresentation.Component.Fields.ContainsKey(attribute.ParentLinkFieldName))
-                            {
-                                if (parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName] != null)
-                                {
-                                    if (parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName].LinkedComponentValues != null)
-                                    {
-                                        if (parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName].LinkedComponentValues.Count > 0)
-                                        {
-                                            linkedComponent = parentComponentPresentation.Component.Fields[attribute.ParentLinkFieldName].LinkedComponentValues[0];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (linkedComponent != null)
-                {
-                    return new MvcHtmlString(string.Empty);
-                }
-            }
+            if (!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
 
             var componentPresentation = GetComponentPresentation(helper);
                 
@@ -67,6 +34,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         public static MvcHtmlString MarkComponentPresentationInlineEditable<T>(this HtmlHelper helper, T model, int index)
         {
+            if(!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
+
             var attribute = (TridionViewModelAttribute)model.GetType().GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
             if (attribute != null && !String.IsNullOrEmpty(attribute.ParentLinkFieldName) &&
                 attribute.ParentLinkType != ParentLinkType.Multimedia)
@@ -117,6 +87,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         private static MvcHtmlString InlineEditableInternal<T,TP>(this HtmlHelper helper, T model, Expression<Func<T, TP>> fieldSelector, int index)
         {
+            if (!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
+
             Func<T, TP> compiledFieldSelector = fieldSelector.Compile();
             TP value = compiledFieldSelector(model);
             var sb = new StringBuilder();
@@ -147,7 +120,10 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         private static MvcHtmlString GetInlineEditableMarkupInternal<T, TP>(HtmlHelper helper, Expression<Func<T, TP>> fieldSelector, int index)
         {
-             var componentPresentation = GetComponentPresentation(helper);
+            if (!SiteEditService.SiteEditSettings.Enabled)
+                return new MvcHtmlString(string.Empty);
+            
+            var componentPresentation = GetComponentPresentation(helper);
 
             if (componentPresentation != null)
             {
