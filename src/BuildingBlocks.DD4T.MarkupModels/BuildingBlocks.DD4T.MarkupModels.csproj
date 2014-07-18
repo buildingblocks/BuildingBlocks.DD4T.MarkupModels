@@ -61,6 +61,7 @@
     <Compile Include="ExtensionMethods\ParentLinkTypeEnum.cs" />
     <Compile Include="ExtensionMethods\RichTextHelper.cs" />
     <Compile Include="FieldSetMapper.cs" />
+    <Compile Include="ComponentAttribute\NestedIComponentAttribute.cs" />
     <Compile Include="Interfaces\IComponentBase.cs" />
     <Compile Include="Keyword\KeywordFieldAttribute.cs" />
     <Compile Include="Nested\NestedIComponentAttribute.cs" />

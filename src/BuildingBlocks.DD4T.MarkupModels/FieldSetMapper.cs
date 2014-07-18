@@ -35,7 +35,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
 
                     if (tridionAttribute.SchemaFieldName == String.Empty && source != null)
                     {
-                        //Multimedia object
+                        //Multimedia object or IComponent attribute
                         TrySetProperty<object>(property, destinationModel, source, tridionAttribute);
                     }
                     else if (tridionAttribute.IsMultiValue)

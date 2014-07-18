@@ -63,7 +63,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
             foreach (
                 XmlNode link in
                     doc.SelectNodes(
-                        "//xhtml:a[@xlink:href[starts-with(string(.),'tcm:')]][@xhtml:href='' or not(@xhtml:href)]",
+                        "//xhtml:a[@xlink:href[starts-with(string(.),'tcm:')]][@href='' or not(@href)]",
                         nsmgr))
             {
                 string tcmuri = link.Attributes["xlink:href"].Value;

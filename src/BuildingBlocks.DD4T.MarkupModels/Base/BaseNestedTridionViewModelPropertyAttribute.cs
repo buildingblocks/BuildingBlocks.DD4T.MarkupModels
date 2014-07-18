@@ -22,6 +22,11 @@ namespace BuildingBlocks.DD4T.MarkupModels
 
         public bool IsMultiValue { get; set; }
 
+        protected BaseNestedTridionViewModelPropertyAttribute(string schemaFieldName)
+        {
+            SchemaFieldName = schemaFieldName;
+        }
+
         protected BaseNestedTridionViewModelPropertyAttribute(string schemaFieldName, Type targetType)
         {
             SchemaFieldName = schemaFieldName;
