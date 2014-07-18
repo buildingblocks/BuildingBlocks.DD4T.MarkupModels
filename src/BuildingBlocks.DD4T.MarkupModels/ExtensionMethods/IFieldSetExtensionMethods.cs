@@ -6,12 +6,10 @@ using DD4T.ContentModel;
 
 namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 {
-    ///<summary>
-    /// IComponentExtensionMethods is responsible for PURPOSE
-    /// Author: Robert Stevenson-Leggett
-    /// Date: 2013-04-09
-    ///</summary>
-    public static class IFieldSetExtensionMethods
+    /// <summary>
+    /// Extension methods for the FieldSet
+    /// </summary>
+    public static class FieldSetExtensionMethods
     {
         public static string GetValue(this IFieldSet fields, string schemaFieldName)
         {
