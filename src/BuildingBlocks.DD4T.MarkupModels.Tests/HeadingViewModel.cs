@@ -24,14 +24,20 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
         [TextComponentLinkField("image", "AltText", IsLinkedFieldMetadata = true)]
         public string ImageAltText { get; set; }
 
-        [TextComponentLinkField("link","link_url")]
+        [TextComponentLinkField("link", "link_url")]
         public string RelatedLinkUrl { get; set; }
 
-        [TextComponentLinkField("link","link_text")]
+        [TextComponentLinkField("link", "link_text")]
         public string RelatedLinkText { get; set; }
 
         [BooleanField("show_social_links", IsMetadata = true)]
         public bool ShowSocialLinks { get; set; }
+
+        [BooleanField("show_rss_link", IsMetadata = true, StringValue = "Of Course!")]
+        public bool ShowRssLink { get; set; }
+
+        [BooleanField("show_blog_link", IsMetadata = true, StringValue = "Fair cop")]
+        public bool ShowBlogLink { get; set; }
 
         [MultimediaUrl("thumbnail_images", IsMultiValue = true)]
         public IEnumerable<string> ThumbnailImages { get; set; }
@@ -53,5 +59,17 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
 
         [InternalOrExternalLink("component_link")]
         public string Link { get; set; }
+
+        [NumberField("number")]
+        public double Number { get; set; }
+
+        [NumberField("totals", IsMultiValue = true)]
+        public IEnumerable<double> Totals { get; set; }
+
+        [NumberComponentLinkField("numbered_link", "number")]
+        public double LinkedNumber { get; set; }
+
+        [NumberComponentLinkField("numbered_link", "totals", IsMultiValue = true)]
+        public IEnumerable<double> LinkedTotals { get; set; }
     }
 }

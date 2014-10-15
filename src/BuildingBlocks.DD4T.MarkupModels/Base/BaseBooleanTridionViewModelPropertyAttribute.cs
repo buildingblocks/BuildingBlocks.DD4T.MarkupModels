@@ -1,7 +1,6 @@
-﻿using System;
+﻿using DD4T.ContentModel;
+using System;
 using System.Collections.Generic;
-
-using DD4T.ContentModel;
 
 namespace BuildingBlocks.DD4T.MarkupModels
 {
@@ -11,6 +10,8 @@ namespace BuildingBlocks.DD4T.MarkupModels
     ///</summary>
     public abstract class BaseBooleanTridionViewModelPropertyAttribute : Attribute, ITridionViewModelPropertyAttribute<bool>
     {
+        private string _stringValue = "Yes";
+
         public string SchemaFieldName { get; set; }
 
         public bool IsMetadata { get; set; }
@@ -18,6 +19,12 @@ namespace BuildingBlocks.DD4T.MarkupModels
         public bool InlineEditable { get; set; }
 
         public bool IsMultiValue { get; set; }
+
+        public string StringValue
+        {
+            get { return _stringValue; }
+            set { _stringValue = value; }
+        }
 
         protected BaseBooleanTridionViewModelPropertyAttribute(string schemaFieldName)
         {
@@ -33,11 +40,9 @@ namespace BuildingBlocks.DD4T.MarkupModels
         protected bool ParseString(string value)
         {
             bool output;
-            if (!bool.TryParse(value, out output))
-            {
-                return value.ToLower() == "yes";
-            }
-            return output;
+            return !bool.TryParse(value, out output)
+                       ? value.Equals(StringValue, StringComparison.OrdinalIgnoreCase)
+                       : output;
         }
     }
 }

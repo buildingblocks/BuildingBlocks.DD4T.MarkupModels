@@ -1,8 +1,8 @@
+using DD4T.ContentModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using DD4T.ContentModel;
 
 namespace BuildingBlocks.DD4T.MarkupModels
 {
@@ -40,6 +40,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
                     }
                     else if (tridionAttribute.IsMultiValue)
                     {
+                        TrySetMultiValueProperty<double>(property, destinationModel, fields, tridionAttribute);
                         TrySetMultiValueProperty<bool>(property, destinationModel, fields, tridionAttribute);
                         TrySetMultiValueProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
                         TrySetMultiValueProperty<string>(property, destinationModel, fields, tridionAttribute);
@@ -47,6 +48,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
                     }
                     else
                     {
+                        TrySetProperty<double>(property, destinationModel, fields, tridionAttribute);
                         TrySetProperty<bool>(property, destinationModel, fields, tridionAttribute);
                         TrySetProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
                         TrySetProperty<string>(property, destinationModel, fields, tridionAttribute);
