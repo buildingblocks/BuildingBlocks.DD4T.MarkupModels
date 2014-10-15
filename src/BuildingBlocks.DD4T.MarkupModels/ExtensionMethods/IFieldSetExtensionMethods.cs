@@ -1,8 +1,7 @@
-﻿using System;
+﻿using DD4T.ContentModel;
+using System;
 using System.Collections.Generic;
 using System.Text;
-
-using DD4T.ContentModel;
 
 namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 {
@@ -31,7 +30,8 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
             return result;
         }
 
-        public static string GetComponentLinkedValue(this IFieldSet fields, string schemaFieldName, bool isLinkedFieldMetadata, string componentFieldName)
+        public static string GetComponentLinkedValue(this IFieldSet fields, string schemaFieldName, bool isLinkedFieldMetadata,
+                                                     string componentFieldName)
         {
             if (fields.ContainsKey(schemaFieldName))
             {
@@ -57,7 +57,8 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
             return string.Empty;
         }
 
-        public static IEnumerable<string> GetComponentLinkedMultiValue(this IFieldSet fields, string schemaFieldName, bool isLinkedFieldMetadata, string componentFieldName)
+        public static IEnumerable<string> GetComponentLinkedMultiValue(this IFieldSet fields, string schemaFieldName,
+                                                                       bool isLinkedFieldMetadata, string componentFieldName)
         {
             var result = new List<string>();
 
@@ -83,7 +84,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         {
             if (fields.ContainsKey(schemaFieldName))
             {
-                if(fields[schemaFieldName].LinkedComponentValues.Count > 0)
+                if (fields[schemaFieldName].LinkedComponentValues.Count > 0)
                 {
                     return fields[schemaFieldName].LinkedComponentValues[0];
                 }
@@ -139,6 +140,82 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
             return DateTime.MinValue;
         }
 
+        public static IEnumerable<double> GetNumberMultiValue(this IFieldSet fields, string schemaFieldName)
+        {
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                if (fields[schemaFieldName].NumericValues.Count > 0)
+                {
+                    return fields[schemaFieldName].NumericValues;
+                }
+            }
+            return new List<double>();
+        }
+
+        public static double GetNumberValue(this IFieldSet fields, string schemaFieldName)
+        {
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                if (fields[schemaFieldName].NumericValues.Count > 0)
+                {
+                    return fields[schemaFieldName].NumericValues[0];
+                }
+            }
+
+            return default(double);
+        }
+
+        public static double GetComponentLinkedNumberValue(this IFieldSet fields, string schemaFieldName, bool isLinkedFieldMetadata,
+                                                           string componentFieldName)
+        {
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                if (fields[schemaFieldName].LinkedComponentValues.Count > 0)
+                {
+                    var linkedComponent = fields[schemaFieldName].LinkedComponentValues[0];
+                    if (isLinkedFieldMetadata)
+                    {
+                        if (linkedComponent.MetadataFields.ContainsKey(componentFieldName))
+                        {
+                            return linkedComponent.MetadataFields.GetNumberValue(componentFieldName);
+                        }
+                    }
+                    else
+                    {
+                        if (linkedComponent.Fields.ContainsKey(componentFieldName))
+                        {
+                            return linkedComponent.Fields.GetNumberValue(componentFieldName);
+                        }
+                    }
+                }
+            }
+
+            return default(double);
+        }
+
+        public static IEnumerable<double> GetComponentLinkedNumberMultiValue(this IFieldSet fields, string schemaFieldName,
+                                                                             bool isLinkedFieldMetadata, string componentFieldName)
+        {
+            var result = new List<double>();
+
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                foreach (var linkedComponent in fields[schemaFieldName].LinkedComponentValues)
+                {
+                    if (isLinkedFieldMetadata)
+                    {
+                        result.Add(linkedComponent.MetadataFields.GetNumberValue(componentFieldName));
+                    }
+                    else
+                    {
+                        result.Add(linkedComponent.Fields.GetNumberValue(componentFieldName));
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static IEnumerable<DateTime> GetDateTimeMultiValue(this IFieldSet fields, string schemaFieldName)
         {
             if (fields.ContainsKey(schemaFieldName))
@@ -151,7 +228,6 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
             return new List<DateTime>();
         }
 
-
         public static string GetKeywordUriValue(this IFieldSet fields, string schemaFieldName)
         {
             if (fields.ContainsKey(schemaFieldName))
@@ -160,7 +236,6 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
                 {
                     return fields[schemaFieldName].Keywords[0].Id;
                 }
-                
             }
             return null;
         }

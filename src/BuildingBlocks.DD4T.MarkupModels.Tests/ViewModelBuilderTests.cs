@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-
-using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
+﻿using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
 using DD4T.ContentModel;
 using DD4T.ContentModel.Factories;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace BuildingBlocks.DD4T.MarkupModels.Tests
 {
@@ -83,7 +82,18 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
             linkedComponen4.MetadataFields.Add("AltText", new Field() { Values = { "Some alt text" } });
 
             var component = new Component();
-            component.Fields.Add("thumbnail_images", new Field() { LinkedComponentValues = new List<Component>() { linkedComponent, linkedComponent2, linkedComponent3, linkedComponen4 } });
+            component.Fields.Add("thumbnail_images",
+                                 new Field()
+                                 {
+                                     LinkedComponentValues =
+                                         new List<Component>()
+                                         {
+                                             linkedComponent,
+                                             linkedComponent2,
+                                             linkedComponent3,
+                                             linkedComponen4
+                                         }
+                                 });
 
             var headingModel = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
 
@@ -94,18 +104,18 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
         public void Builder_Can_Build_A_Multivalue_Metadata_text_field()
         {
             var component = new Component();
-            component.MetadataFields.Add("bullet_points", new Field() { Values = {"test1","test2","test3"} });
+            component.MetadataFields.Add("bullet_points", new Field() { Values = { "test1", "test2", "test3" } });
 
             var headingModel = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
 
             Assert.That(headingModel.SomeMultiValueText, Has.Count.EqualTo(3));
         }
 
-        [Test] 
+        [Test]
         public void Builder_Can_Convert_To_Boolean_On_A_Metadata_Field()
         {
             var component = new Component();
-            component.MetadataFields.Add("show_social_links", new Field() { Values = {"yes"} });
+            component.MetadataFields.Add("show_social_links", new Field() { Values = { "yes" } });
 
             var headingModel = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
 
@@ -113,69 +123,133 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
         }
 
         [Test]
+        public void Builder_Can_Convert_To_Boolean_Value_On_A_Metadata_Field()
+        {
+            var component = new Component();
+            component.MetadataFields.Add("show_rss_link", new Field() { Values = { "Of Course!" } });
+            component.MetadataFields.Add("show_blog_link", new Field() { Values = { "Yes" } });
+
+            var headingModel = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+
+            Assert.That(headingModel.ShowRssLink, Is.EqualTo(true));
+            Assert.That(headingModel.ShowBlogLink, Is.EqualTo(false));
+        }
+
+        [Test]
         public void Builder_Can_Convert_A_List_Of_ComponentLinked_Booleans()
         {
             var linkedComponent = new Component();
-            linkedComponent.Fields.Add("show", new Field() {Values = {"yes"}});
+            linkedComponent.Fields.Add("show", new Field() { Values = { "yes" } });
 
             var linkedComponent2 = new Component();
-            linkedComponent2.Fields.Add("show", new Field() {Values = {"no"}});
+            linkedComponent2.Fields.Add("show", new Field() { Values = { "no" } });
 
             var linkedComponent3 = new Component();
-            linkedComponent3.Fields.Add("show", new Field() {Values = {"yes"}});
+            linkedComponent3.Fields.Add("show", new Field() { Values = { "yes" } });
 
             var component = new Component();
             component.Fields.Add("featured", new Field() { LinkedComponentValues = { linkedComponent, linkedComponent2, linkedComponent3 } });
 
             var headingModel = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
 
-            Assert.That(headingModel.CheckBoxes.First(),Is.EqualTo(true));
+            Assert.That(headingModel.CheckBoxes.First(), Is.EqualTo(true));
         }
 
         [Test]
         public void Builder_Can_Build_A_Carousel_Using_The_Nested_Component_Attribute()
         {
             var slide1 = new Component();
-            slide1.Fields.Add("heading", new Field() { Values = {"Slide 1"}});
-            slide1.Fields.Add("summary", new Field() { Values = {"Slide 1 Summary"}});
-            slide1.Fields.Add("image", new Field() { LinkedComponentValues = { new Component() { Multimedia = new Multimedia() { Url = "_images/asd.png" }}}});
+            slide1.Fields.Add("heading", new Field() { Values = { "Slide 1" } });
+            slide1.Fields.Add("summary", new Field() { Values = { "Slide 1 Summary" } });
+            slide1.Fields.Add("image",
+                              new Field()
+                              {
+                                  LinkedComponentValues =
+                                  {
+                                      new Component()
+                                      {
+                                          Multimedia =
+                                              new Multimedia()
+                                              {
+                                                  Url = "_images/asd.png"
+                                              }
+                                      }
+                                  }
+                              });
 
             var slide2 = new Component();
             slide2.Fields.Add("heading", new Field() { Values = { "Slide 2" } });
             slide2.Fields.Add("summary", new Field() { Values = { "Slide 2 Summary" } });
-            slide2.Fields.Add("image", new Field() { LinkedComponentValues = { new Component() { Multimedia = new Multimedia() { Url = "_images/asdc.png" } } } });
+            slide2.Fields.Add("image",
+                              new Field()
+                              {
+                                  LinkedComponentValues =
+                                  {
+                                      new Component()
+                                      {
+                                          Multimedia =
+                                              new Multimedia()
+                                              {
+                                                  Url =
+                                                      "_images/asdc.png"
+                                              }
+                                      }
+                                  }
+                              });
 
             var carousel = new Component();
-            carousel.Fields.Add("title", new Field() { Values = { "My Carousel" }});
-            carousel.Fields.Add("list", new Field() { LinkedComponentValues = {slide1,slide2}});
+            carousel.Fields.Add("title", new Field() { Values = { "My Carousel" } });
+            carousel.Fields.Add("list", new Field() { LinkedComponentValues = { slide1, slide2 } });
 
             var carouselModel = ComponentViewModelBuilder.Build<CarouselViewModel>(carousel);
 
             Assert.That(carouselModel.CarouselItemViewModels.Count(), Is.EqualTo(2));
             Assert.That(carouselModel.CarouselItemViewModels.First().Heading, Is.EqualTo("Slide 1"));
             Assert.That(carouselModel.CarouselItemViewModels.Skip(1).First().Heading, Is.EqualTo("Slide 2"));
-        }        
-        
+        }
+
         [Test]
         public void Builder_Can_Build_A_Carousel_Using_The_Embedded_Component_Attribute()
         {
             var slide1 = new FieldSet();
-            slide1.Add("heading", new Field() { Values = {"Slide 1"}});
-            slide1.Add("summary", new Field() { Values = {"Slide 1 Summary"}});
-            slide1.Add("image", new Field() { LinkedComponentValues = { new Component() { Multimedia = new Multimedia() { Url = "_images/asd.png" }}}});
+            slide1.Add("heading", new Field() { Values = { "Slide 1" } });
+            slide1.Add("summary", new Field() { Values = { "Slide 1 Summary" } });
+            slide1.Add("image",
+                       new Field()
+                       {
+                           LinkedComponentValues =
+                           {
+                               new Component()
+                               {
+                                   Multimedia =
+                                       new Multimedia() { Url = "_images/asd.png" }
+                               }
+                           }
+                       });
 
             var slide2 = new FieldSet();
             slide2.Add("heading", new Field() { Values = { "Slide 2" } });
             slide2.Add("summary", new Field() { Values = { "Slide 2 Summary" } });
-            slide2.Add("image", new Field() { LinkedComponentValues = { new Component() { Multimedia = new Multimedia() { Url = "_images/asdc.png" } } } });
+            slide2.Add("image",
+                       new Field()
+                       {
+                           LinkedComponentValues =
+                           {
+                               new Component()
+                               {
+                                   Multimedia =
+                                       new Multimedia() { Url = "_images/asdc.png" }
+                               }
+                           }
+                       });
 
             var embeddedList = new List<FieldSet>();
             embeddedList.Add(slide1);
             embeddedList.Add(slide2);
 
             var carousel = new Component();
-            carousel.Fields.Add("title", new Field() { Values = { "My Carousel" }});
-            carousel.Fields.Add("embedded_list", new Field() { EmbeddedValues = embeddedList});
+            carousel.Fields.Add("title", new Field() { Values = { "My Carousel" } });
+            carousel.Fields.Add("embedded_list", new Field() { EmbeddedValues = embeddedList });
 
             var carouselModel = ComponentViewModelBuilder.Build<CarouselViewModel>(carousel);
 
@@ -189,13 +263,13 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
         {
             //Arrange
             var linkedComponent = new Component();
-            linkedComponent.Fields.Add("dates", new Field() { DateTimeValues = { DateTime.Now, DateTime.Now.AddDays(1) }});
+            linkedComponent.Fields.Add("dates", new Field() { DateTimeValues = { DateTime.Now, DateTime.Now.AddDays(1) } });
 
-            var component = new Component(); 
-            component.Fields.Add("date_component",new Field() { LinkedComponentValues = { linkedComponent }});
-                
+            var component = new Component();
+            component.Fields.Add("date_component", new Field() { LinkedComponentValues = { linkedComponent } });
+
             //Act
-            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component); 
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
 
             //Assert
             Assert.That(model.Dates, Has.Count.EqualTo(2));
@@ -228,6 +302,38 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
             var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
 
             Assert.That(model.Link, Is.EqualTo("http://www.google.co.uk"));
+        }
+
+        [Test]
+        public void Builder_Can_Build_a_number_field()
+        {
+            var component = new Component();
+            component.Fields.Add("number", new Field() { NumericValues = { 5.5, 4, 6 } });
+            component.Fields.Add("totals", new Field() { NumericValues = { 2, 3.3, 5.6 } });
+
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+
+            Assert.That(model.Number, Is.EqualTo(5.5));
+            Assert.That(model.Totals.Count(), Is.EqualTo(3));
+            Assert.That(model.Totals.First(), Is.EqualTo(2));
+            Assert.That(model.Totals.Skip(1).First(), Is.EqualTo(3.3));
+            Assert.That(model.Totals.Last(), Is.EqualTo(5.6));
+        }
+
+        [Test]
+        public void Builder_Can_Build_a_linked_number_field()
+        {
+            var linkedComponent = new Component();
+            linkedComponent.Fields.Add("number", new Field() { NumericValues = { 5.5, 4, 6 } });
+            linkedComponent.Fields.Add("totals", new Field() { NumericValues = { 2, 3.3, 5.6 } });
+
+            var component = new Component();
+            component.Fields.Add("numbered_link", new Field() { LinkedComponentValues = { linkedComponent } });
+
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+
+            Assert.That(model.LinkedNumber, Is.EqualTo(5.5));
+            Assert.That(model.LinkedTotals.First(), Is.EqualTo(2));
         }
     }
 }

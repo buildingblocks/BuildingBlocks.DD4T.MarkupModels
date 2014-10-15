@@ -122,9 +122,13 @@ The following property attributes are available:
  * DateTimeComponentLinkField
    * Looks for the value in the DateTimeValues collection on a Linked IComponent
  * BooleanField
-   * Converts the value into a boolean (handles the case for �Yes�/�No�) keywords
+   * Converts the value into a boolean (handles the case for a field's string value of "Yes" = true. This can be configured using the StringValue property) keywords
  * BooleanComponentLinkField
    * Converts the value into a boolean from a component linked value
+ * NumberField
+   * Gets the double value from a number field
+ * NumberComponentLinkField
+   * Gets the double value from a number field of a linked component
  * NestedComponent
    * This is used to indicate that the property type is a submodel. For example a collection of carousel slides.
 
