@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-
 using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
 
 using DD4T.ContentModel;
-using DD4T.Mvc.Html;
 
 namespace BuildingBlocks.DD4T.MarkupModels
 {
