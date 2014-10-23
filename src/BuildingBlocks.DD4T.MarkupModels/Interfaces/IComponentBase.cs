@@ -9,5 +9,7 @@
     {
         [TextField("id")]
         string ComponentId { get; set; }
+
+        string Schema { get; set; }
     }
 }

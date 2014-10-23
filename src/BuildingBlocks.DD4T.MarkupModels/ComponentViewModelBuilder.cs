@@ -1,5 +1,5 @@
-using System;
 using DD4T.ContentModel;
+using System;
 
 namespace BuildingBlocks.DD4T.MarkupModels
 {
@@ -12,7 +12,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             if (obj is IComponentBase)
             {
                 obj.GetType().GetProperty("ComponentId").SetValue(obj, source.Id, null);
-
+                obj.GetType().GetProperty("Schema").SetValue(obj, source.Schema.Title, null);
             }
             return obj;
         }
@@ -24,6 +24,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             if (obj is IComponentBase)
             {
                 obj.GetType().GetProperty("ComponentId").SetValue(obj, source.Id, null);
+                obj.GetType().GetProperty("Schema").SetValue(obj, source.Schema.Title, null);
             }
             return obj;
         }

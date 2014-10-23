@@ -335,5 +335,23 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
             Assert.That(model.LinkedNumber, Is.EqualTo(5.5));
             Assert.That(model.LinkedTotals.First(), Is.EqualTo(2));
         }
+
+        [Test]
+        public void Builder_Can_Build_ComponentBase()
+        {
+            var component = new Component
+                            {
+                                Id = "tcm:1-2345",
+                                Schema = new Schema
+                                         {
+                                             Title = "Schema Title"
+                                         }
+                            };
+
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+
+            Assert.That(model.ComponentId, Is.EqualTo("tcm:1-2345"));
+            Assert.That(model.Schema, Is.EqualTo("Schema Title"));
+        }
     }
 }

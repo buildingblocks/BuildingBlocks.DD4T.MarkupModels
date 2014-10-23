@@ -4,8 +4,12 @@ using System.Collections.Generic;
 namespace BuildingBlocks.DD4T.MarkupModels.Tests
 {
     [TridionViewModel(SchemaTitle = "General")]
-    public class HeadingViewModel
+    public class HeadingViewModel : IComponentBase
     {
+        public string ComponentId { get; set; }
+
+        public string Schema { get; set; }
+
         [TextField("title_line_1", InlineEditable = false)]
         public string TitleLine1 { get; set; }
 
