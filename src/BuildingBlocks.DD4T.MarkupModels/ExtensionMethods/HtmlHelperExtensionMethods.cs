@@ -52,13 +52,13 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
                             parentComponentPresentation.Component.Fields[parentLinkFieldName].LinkedComponentValues[
                                 index];
                     }
+
                     if (linkedComponent != null)
                     {
                         return helper.SiteEditComponentPresentation(linkedComponent,
                                                                     parentComponentPresentation.ComponentTemplate.Id,
                                                                     false,
                                                                     string.Empty);
-                        break;
                     }
                 }
             }

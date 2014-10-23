@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<package >
+
+<package>
   <metadata>
     <id>BuildingBlocks.DD4T.MarkupModels</id>
     <version>$version$</version>
@@ -11,8 +12,9 @@
     <releaseNotes>Added more support for different types of ComponentLink fields (rich text, datetime). Added HtmlHelper extension methods for Inline Editing (Site Edit and Experience Manager)</releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>DD4T Tridion</tags>
-	<dependencies>
-      <dependency id="DD4TFramework" version="1.25" />
+    <dependencies>
+      <dependency id="DD4TFramework" version="1.31.0" />
+      <dependency id="DD4T-MVC5" version="1.31.1" />
     </dependencies>
   </metadata>
 </package>
