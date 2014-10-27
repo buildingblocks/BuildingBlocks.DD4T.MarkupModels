@@ -131,6 +131,9 @@ The following property attributes are available:
    * Gets the double value from a number field of a linked component
  * NestedComponent
    * This is used to indicate that the property type is a submodel. For example a collection of carousel slides.
+ * NestedKeyword
+   * This is used to indicate that the property type is a submodel for keyword metadata
+   * This field requires a tweak to the DD4T source before it will work (see following pull request: https://github.com/dd4t/dynamic-delivery-4-tridion/pull/5)
 
 Options available on all attributes:
 
