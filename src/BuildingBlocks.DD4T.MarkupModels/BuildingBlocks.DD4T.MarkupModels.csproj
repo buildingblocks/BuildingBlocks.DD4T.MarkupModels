@@ -99,11 +99,14 @@
     <Compile Include="Base\BaseNestedTridionViewModelPropertyAttribute.cs" />
     <Compile Include="Base\BaseStringTridionViewModelPropertyAttribute.cs" />
     <Compile Include="Boolean\BooleanTextField.cs" />
+    <Compile Include="Interfaces\IKeywordBase.cs" />
+    <Compile Include="KeywordViewModelBuilder.cs" />
     <Compile Include="ExtensionMethods\ParentLinkTypeEnum.cs" />
     <Compile Include="ExtensionMethods\RichTextHelper.cs" />
     <Compile Include="FieldSetMapper.cs" />
     <Compile Include="ComponentAttribute\NestedIComponentAttribute.cs" />
     <Compile Include="Interfaces\IComponentBase.cs" />
+    <Compile Include="Nested\NestedKeywordFieldAttribute.cs" />
     <Compile Include="Keyword\KeywordFieldAttribute.cs" />
     <Compile Include="Nested\NestedIComponentAttribute.cs" />
     <Compile Include="Number\NumberComponentLinkFieldAttribute.cs" />

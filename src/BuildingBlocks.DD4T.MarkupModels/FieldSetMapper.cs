@@ -8,6 +8,49 @@ namespace BuildingBlocks.DD4T.MarkupModels
 {
     internal static class FieldSetMapper
     {
+        internal static object Build(IFieldSet fields, object destinationModel, IKeyword source)
+        {
+            var type = destinationModel.GetType();
+            var properties = type.GetProperties();
+
+            foreach (var property in properties)
+            {
+                var attributes = property.GetCustomAttributes(true);
+                foreach (var attr in attributes)
+                {
+                    var tridionAttribute = attr as ITridionViewModelPropertyAttribute;
+                    if (tridionAttribute == null)
+                    {
+                        continue;
+                    }
+
+                    TrySetAllValues(fields, destinationModel, tridionAttribute, property);
+                }
+            }
+
+            return destinationModel;
+        }
+
+        private static void TrySetAllValues(IFieldSet fields, object destinationModel, ITridionViewModelPropertyAttribute tridionAttribute,
+                                            PropertyInfo property)
+        {
+            if (tridionAttribute.IsMultiValue)
+            {
+                TrySetMultiValueProperty<double>(property, destinationModel, fields, tridionAttribute);
+                TrySetMultiValueProperty<bool>(property, destinationModel, fields, tridionAttribute);
+                TrySetMultiValueProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
+                TrySetMultiValueProperty<string>(property, destinationModel, fields, tridionAttribute);
+                TrySetMultiValueProperty<object>(property, destinationModel, fields, tridionAttribute);
+            }
+            else
+            {
+                TrySetProperty<double>(property, destinationModel, fields, tridionAttribute);
+                TrySetProperty<bool>(property, destinationModel, fields, tridionAttribute);
+                TrySetProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
+                TrySetProperty<string>(property, destinationModel, fields, tridionAttribute);
+                TrySetProperty<object>(property, destinationModel, fields, tridionAttribute);
+            }
+        }
 
         internal static object Build(IFieldSet sourceFields, IFieldSet sourceMetadataFields, object destinationModel,
                                      IComponent source)
@@ -38,21 +81,9 @@ namespace BuildingBlocks.DD4T.MarkupModels
                         //Multimedia object or IComponent attribute
                         TrySetProperty<object>(property, destinationModel, source, tridionAttribute);
                     }
-                    else if (tridionAttribute.IsMultiValue)
-                    {
-                        TrySetMultiValueProperty<double>(property, destinationModel, fields, tridionAttribute);
-                        TrySetMultiValueProperty<bool>(property, destinationModel, fields, tridionAttribute);
-                        TrySetMultiValueProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
-                        TrySetMultiValueProperty<string>(property, destinationModel, fields, tridionAttribute);
-                        TrySetMultiValueProperty<object>(property, destinationModel, fields, tridionAttribute);
-                    }
                     else
                     {
-                        TrySetProperty<double>(property, destinationModel, fields, tridionAttribute);
-                        TrySetProperty<bool>(property, destinationModel, fields, tridionAttribute);
-                        TrySetProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
-                        TrySetProperty<string>(property, destinationModel, fields, tridionAttribute);
-                        TrySetProperty<object>(property, destinationModel, fields, tridionAttribute);
+                        TrySetAllValues(fields, destinationModel, tridionAttribute, property);
                     }
                 }
             }
@@ -90,9 +121,9 @@ namespace BuildingBlocks.DD4T.MarkupModels
                 {
                     var nestedAttr = (BaseNestedTridionViewModelPropertyAttribute) tridionAttribute;
                     var caster = typeof (System.Linq.Enumerable)
-                        .GetMethod("Cast", new[] {typeof (IEnumerable)})
+                        .GetMethod("Cast", new[] { typeof (IEnumerable) })
                         .MakeGenericMethod(nestedAttr.TargetType);
-                    var castedValue = caster.Invoke(null, new object[] {value});
+                    var castedValue = caster.Invoke(null, new object[] { value });
                     property.SetValue(destinationModel, castedValue, null);
                 }
                 else

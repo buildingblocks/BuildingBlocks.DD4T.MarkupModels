@@ -353,5 +353,50 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
             Assert.That(model.ComponentId, Is.EqualTo("tcm:1-2345"));
             Assert.That(model.Schema, Is.EqualTo("Schema Title"));
         }
+
+        [Test]
+        public void Builder_Can_Build_Keyword_Field()
+        {
+            var component = new Component();
+
+            var keyword = new Keyword { Id = "tcm:1-2345", Title = "CME title", Key = "key" };
+            keyword.MetadataFields.Add("translated", new Field { Values = { "Translated value" } });
+
+            component.Fields.Add("translated", new Field { Keywords = { keyword } });
+
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+            Assert.That(model.Translated, Is.Not.Null);
+            Assert.That(model.Translated.Translated, Is.EqualTo("Translated value"));
+            Assert.That(model.Translated.KeywordId, Is.EqualTo("tcm:1-2345"));
+            Assert.That(model.Translated.KeywordValue, Is.EqualTo("CME title"));
+            Assert.That(model.Translated.KeywordKey, Is.EqualTo("key"));
+        }
+
+        [Test]
+        public void Builder_Can_Build_MultiValued_Keyword_Field()
+        {
+            var component = new Component();
+
+            var keyword1 = new Keyword { Id = "tcm:1-2345" };
+            keyword1.MetadataFields.Add("translated", new Field { Values = { "Translated value" } });
+
+            var keyword2 = new Keyword { Id = "tcm:1-2346" };
+            keyword2.MetadataFields.Add("translated", new Field { Values = { "Second translated value" } });
+
+            var keyword3 = new Keyword { Id = "tcm:1-2347" };
+            keyword3.MetadataFields.Add("translated", new Field { Values = { "Third translated value" } });
+
+            component.Fields.Add("translatable", new Field { Keywords = { keyword1, keyword2, keyword3 } });
+
+            var model = ComponentViewModelBuilder.Build<HeadingViewModel>(component);
+            Assert.That(model.Translatable, Is.Not.Null);
+            Assert.That(model.Translatable.Count(), Is.EqualTo(3));
+            Assert.That(model.Translatable.First().Translated, Is.EqualTo("Translated value"));
+            Assert.That(model.Translatable.First().KeywordId, Is.EqualTo("tcm:1-2345"));
+            Assert.That(model.Translatable.Skip(1).First().Translated, Is.EqualTo("Second translated value"));
+            Assert.That(model.Translatable.Skip(1).First().KeywordId, Is.EqualTo("tcm:1-2346"));
+            Assert.That(model.Translatable.Last().Translated, Is.EqualTo("Third translated value"));
+            Assert.That(model.Translatable.Last().KeywordId, Is.EqualTo("tcm:1-2347"));
+        }
     }
 }

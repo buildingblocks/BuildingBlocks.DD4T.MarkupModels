@@ -29,12 +29,6 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return obj;
         }
 
-        internal static T Build<T>(IFieldSet source) where T : new()
-        {
-            var destinationModel = new T();
-            return (T) FieldSetMapper.Build(source, null, destinationModel, null);
-        }
-
         internal static object Build(IFieldSet source, Type targetType)
         {
             var destinationModel = Activator.CreateInstance(targetType);

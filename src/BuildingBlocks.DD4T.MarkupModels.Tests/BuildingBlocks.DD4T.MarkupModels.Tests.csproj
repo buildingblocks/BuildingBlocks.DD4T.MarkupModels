@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="CarouselItemViewModel.cs" />
     <Compile Include="CarouselViewModel.cs" />
+    <Compile Include="CategoryKeywordViewModel.cs" />
     <Compile Include="EmbeddedCarouselItemViewModel.cs" />
     <Compile Include="FakeDependencyResolver.cs" />
     <Compile Include="HeadingViewModel.cs" />

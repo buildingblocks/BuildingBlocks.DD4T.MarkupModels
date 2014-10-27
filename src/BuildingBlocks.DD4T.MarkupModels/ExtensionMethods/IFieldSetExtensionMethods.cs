@@ -104,6 +104,30 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
             return new List<IComponent>();
         }
 
+        public static IKeyword GetLinkedKeyword(this IFieldSet fields, string schemaFieldName)
+        {
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                if (fields[schemaFieldName].Keywords.Count > 0)
+                {
+                    return fields[schemaFieldName].Keywords[0];
+                }
+            }
+            return null;
+        }
+
+        public static IEnumerable<IKeyword> GetLinkedKeywordMultiValue(this IFieldSet fields, string schemaFieldName)
+        {
+            if (fields.ContainsKey(schemaFieldName))
+            {
+                if (fields[schemaFieldName].Keywords.Count > 0)
+                {
+                    return fields[schemaFieldName].Keywords;
+                }
+            }
+            return new List<IKeyword>();
+        }
+
         public static IFieldSet GetEmbeddedFieldSet(this IFieldSet fields, string schemaFieldName)
         {
             if (fields.ContainsKey(schemaFieldName))

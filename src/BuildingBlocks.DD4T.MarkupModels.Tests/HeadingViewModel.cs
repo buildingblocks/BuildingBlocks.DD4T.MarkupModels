@@ -75,5 +75,11 @@ namespace BuildingBlocks.DD4T.MarkupModels.Tests
 
         [NumberComponentLinkField("numbered_link", "totals", IsMultiValue = true)]
         public IEnumerable<double> LinkedTotals { get; set; }
+
+        [NestedKeywordField("translated", typeof (CategoryKeywordViewModel))]
+        public CategoryKeywordViewModel Translated { get; set; }
+
+        [NestedKeywordField("translatable", typeof (CategoryKeywordViewModel), IsMultiValue = true)]
+        public IEnumerable<CategoryKeywordViewModel> Translatable { get; set; }
     }
 }
