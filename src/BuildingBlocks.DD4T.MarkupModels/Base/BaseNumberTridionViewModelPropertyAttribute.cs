@@ -22,10 +22,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
             SchemaFieldName = schemaFieldName;
         }
 
-        public abstract double GetValue(IFieldSet fields);
+        public abstract double GetValue(IFieldSet fields, IPage page = null);
 
-        public abstract double GetValue(IComponent fields);
+        public abstract double GetValue(IComponent fields, IPage page = null);
 
-        public abstract IEnumerable<double> GetMultiValue(IFieldSet source);
+        public abstract IEnumerable<double> GetMultiValue(IFieldSet source, IPage page = null);
     }
 }

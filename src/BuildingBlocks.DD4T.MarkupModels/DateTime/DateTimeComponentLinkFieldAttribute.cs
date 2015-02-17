@@ -26,7 +26,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             ComponentFieldName = componentExpression;
         }
 
-        public override DateTime GetValue(IFieldSet fields)
+        public override DateTime GetValue(IFieldSet fields, IPage page = null)
         {
             var linkedComponent = fields.GetLinkedComponent(SchemaFieldName);
             if (linkedComponent != null && linkedComponent.Fields.ContainsKey(ComponentFieldName))
@@ -36,12 +36,12 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return DateTime.MinValue;
         }
 
-        public override DateTime GetValue(IComponent source)
+        public override DateTime GetValue(IComponent source, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<DateTime> GetMultiValue(IFieldSet source)
+        public override IEnumerable<DateTime> GetMultiValue(IFieldSet source, IPage page = null)
         {
             var linkedComponent = source.GetLinkedComponent(SchemaFieldName);
             if (linkedComponent != null && linkedComponent.Fields.ContainsKey(ComponentFieldName))

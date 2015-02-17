@@ -43,9 +43,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         /// Use as: Model.Field["key"].Value.ResolveRichText()
         /// </summary>
         /// <param name="value">the rich text string</param>
-        /// <param name="displayFullWidthTable">display full width table, default value is false</param>
+        /// <param name="page">Optional IPage object for resolving component links with closest page rule</param>
         /// <returns>MvcHtmlString (resolved rich text)</returns>
-        public static MvcHtmlString ResolveRichText(this string value)
+        public static MvcHtmlString ResolveRichText(this string value, IPage page = null)
         {
             var doc = new XmlDocument();
             var nsmgr = new XmlNamespaceManager(doc.NameTable);
@@ -67,7 +67,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
                         nsmgr))
             {
                 string tcmuri = link.Attributes["xlink:href"].Value;
-                string linkUrl = LinkFactory.ResolveLink(tcmuri);
+                string linkUrl = page != null ? LinkFactory.ResolveLink(page.Id, tcmuri, null) : LinkFactory.ResolveLink(tcmuri);
 
                 if (!string.IsNullOrEmpty(linkUrl))
                 {
@@ -131,11 +131,11 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         /// <param name="field">the field</param>
         /// <param name="index">specified index of the field</param>
         /// <returns>MvcHtmlString (resolved rich text)</returns>
-        public static MvcHtmlString ResolveRichText(this IField field, int index)
+        public static MvcHtmlString ResolveRichText(this IField field, int index, IPage page = null)
         {
             if (field.FieldType == FieldType.Xhtml)
             {
-                return ResolveRichText(field.Values[index]);
+                return ResolveRichText(field.Values[index], page);
             }
 
             // return message to view developer that this is incorrectly considered a rich text field
@@ -147,9 +147,9 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         /// </summary>
         /// <param name="field">the field</param>
         /// <returns>MvcHtmlString (resolved rich text)</returns>
-        public static MvcHtmlString ResolveRichText(this IField field)
+        public static MvcHtmlString ResolveRichText(this IField field, IPage page = null)
         {
-            return ResolveRichText(field, 0);
+            return ResolveRichText(field, 0, page);
         }
 
         /// <summary>

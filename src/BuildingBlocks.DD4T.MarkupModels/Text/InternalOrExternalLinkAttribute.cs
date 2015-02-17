@@ -23,7 +23,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override string GetValue(IFieldSet fields)
+        public override string GetValue(IFieldSet fields, IPage page = null)
         {
             var internalLink = fields.GetLinkedComponent(SchemaFieldName);
             
@@ -32,7 +32,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             {
                 var linkProvider = DependencyResolver.Current.GetService<ILinkProvider>();
 
-                if (linkProvider != null) link = linkProvider.ResolveLink(internalLink.Id);
+                if (linkProvider != null) link = page != null ? linkProvider.ResolveLink(page.Id, internalLink.Id, null) : linkProvider.ResolveLink(internalLink.Id);
             }
             else
             {
@@ -43,19 +43,19 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return link;
         }
 
-        public override string GetValue(IComponent fields)
+        public override string GetValue(IComponent fields, IPage page = null)
         {
             throw new System.NotImplementedException();
         }
 
-        public override IEnumerable<string> GetMultiValue(IFieldSet source)
+        public override IEnumerable<string> GetMultiValue(IFieldSet source, IPage page = null)
         {
             var internalLinks = source.GetLinkedComponentMultiValue(SchemaFieldName);
 
             if (internalLinks.Any())
             {
                 var linkProvider = DependencyResolver.Current.GetService<ILinkProvider>();
-                return internalLinks.Select(internalLink => linkProvider.ResolveLink(internalLink.Id));
+                return internalLinks.Select(internalLink => page != null ? linkProvider.ResolveLink(page.Id, internalLink.Id, null) : linkProvider.ResolveLink(internalLink.Id));
             }
 
             return source.GetMultiValue(SchemaFieldName);

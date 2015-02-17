@@ -31,11 +31,11 @@ namespace BuildingBlocks.DD4T.MarkupModels
             SchemaFieldName = schemaFieldName;
         }
 
-        public abstract bool GetValue(IFieldSet fields);
+        public abstract bool GetValue(IFieldSet fields, IPage page = null);
 
-        public abstract bool GetValue(IComponent source);
+        public abstract bool GetValue(IComponent source, IPage page = null);
 
-        public abstract IEnumerable<bool> GetMultiValue(IFieldSet source);
+        public abstract IEnumerable<bool> GetMultiValue(IFieldSet source, IPage page = null);
 
         protected bool ParseString(string value)
         {

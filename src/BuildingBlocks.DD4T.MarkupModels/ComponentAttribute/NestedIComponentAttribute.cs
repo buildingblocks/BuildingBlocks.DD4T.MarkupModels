@@ -14,17 +14,17 @@ namespace BuildingBlocks.DD4T.MarkupModels.ComponentAttribute
         {
         }
 
-        public override object GetValue(IFieldSet fields)
+        public override object GetValue(IFieldSet fields, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override object GetValue(IComponent source)
+        public override object GetValue(IComponent source, IPage page = null)
         {
             return source;
         }
 
-        public override IEnumerable<object> GetMultiValue(IFieldSet fields)
+        public override IEnumerable<object> GetMultiValue(IFieldSet fields, IPage page = null)
         {
             throw new NotImplementedException();
         }

@@ -19,28 +19,28 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override string GetValue(IFieldSet fields)
+        public override string GetValue(IFieldSet fields, IPage page = null)
         {
             var result = new StringBuilder();
             if (fields.ContainsKey(SchemaFieldName))
             {
                 string value = fields[SchemaFieldName].Value;
-                result.Append(value.ResolveRichText());
+                result.Append(value.ResolveRichText(page));
             }
             return result.ToString();
         }
 
-        public override string GetValue(IComponent fields)
+        public override string GetValue(IComponent fields, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<string> GetMultiValue(IFieldSet fields)
+        public override IEnumerable<string> GetMultiValue(IFieldSet fields, IPage page = null)
         {
             var result = new List<MvcHtmlString>();
             if (fields.ContainsKey(SchemaFieldName))
             {
-                result.AddRange(fields[SchemaFieldName].Values.Select(item => item.ResolveRichText()));
+                result.AddRange(fields[SchemaFieldName].Values.Select(item => item.ResolveRichText(page)));
             }
             return result.Select(x=>x.ToString());
         }

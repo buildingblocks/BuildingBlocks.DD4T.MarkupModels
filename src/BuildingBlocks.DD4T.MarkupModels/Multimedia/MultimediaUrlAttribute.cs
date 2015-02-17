@@ -21,7 +21,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override string GetValue(IFieldSet fields)
+        public override string GetValue(IFieldSet fields, IPage page = null)
         {
             var stringBuilder = new StringBuilder();
             if (fields.ContainsKey(SchemaFieldName))
@@ -35,7 +35,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return stringBuilder.ToString();
         }
 
-        public override string GetValue(IComponent source)
+        public override string GetValue(IComponent source, IPage page = null)
         {
             var stringBuilder = new StringBuilder();
             if(SchemaFieldName == String.Empty && source != null)
@@ -45,7 +45,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return stringBuilder.ToString();
         }
 
-        public override IEnumerable<string> GetMultiValue(IFieldSet source)
+        public override IEnumerable<string> GetMultiValue(IFieldSet source, IPage page = null)
         {
             var values = new List<string>();
             if(source.ContainsKey(SchemaFieldName))

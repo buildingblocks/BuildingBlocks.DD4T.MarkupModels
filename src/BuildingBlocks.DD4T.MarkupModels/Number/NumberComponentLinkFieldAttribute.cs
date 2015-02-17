@@ -16,23 +16,22 @@ namespace BuildingBlocks.DD4T.MarkupModels
 
         public bool IsLinkedFieldMetadata { get; set; }
 
-        public NumberComponentLinkFieldAttribute(string schemaFieldName, string componentExpression)
-            : base(schemaFieldName)
+        public NumberComponentLinkFieldAttribute(string schemaFieldName, string componentExpression)  : base(schemaFieldName)
         {
             ComponentFieldName = componentExpression;
         }
 
-        public override double GetValue(IFieldSet fields)
+        public override double GetValue(IFieldSet fields, IPage page = null)
         {
             return fields.GetComponentLinkedNumberValue(SchemaFieldName, IsLinkedFieldMetadata, ComponentFieldName);
         }
 
-        public override double GetValue(IComponent source)
+        public override double GetValue(IComponent source, IPage page = null)
         {
             return source.Fields.GetComponentLinkedNumberValue(SchemaFieldName, IsLinkedFieldMetadata, ComponentFieldName);
         }
 
-        public override IEnumerable<double> GetMultiValue(IFieldSet source)
+        public override IEnumerable<double> GetMultiValue(IFieldSet source, IPage page = null)
         {
             return source.GetComponentLinkedNumberMultiValue(SchemaFieldName, IsLinkedFieldMetadata, ComponentFieldName);
         }

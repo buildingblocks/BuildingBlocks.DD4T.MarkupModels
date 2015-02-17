@@ -10,11 +10,11 @@ namespace BuildingBlocks.DD4T.MarkupModels
     /// <typeparam name="T"></typeparam>
     public interface ITridionViewModelPropertyAttribute<out T> : ITridionViewModelPropertyAttribute
     {
-        T GetValue(IFieldSet fields);
+        T GetValue(IFieldSet fields, IPage page = null);
 
-        T GetValue(IComponent source);
+        T GetValue(IComponent source, IPage page = null);
 
-        IEnumerable<T> GetMultiValue(IFieldSet fields);
+        IEnumerable<T> GetMultiValue(IFieldSet fields, IPage page = null);
     }
 
     ///<summary>

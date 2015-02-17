@@ -17,17 +17,17 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override DateTime GetValue(IFieldSet fields)
+        public override DateTime GetValue(IFieldSet fields, IPage page = null)
         {
             return fields.GetDateTimeValue(SchemaFieldName);
         }
 
-        public override DateTime GetValue(IComponent source)
+        public override DateTime GetValue(IComponent source, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<DateTime> GetMultiValue(IFieldSet source)
+        public override IEnumerable<DateTime> GetMultiValue(IFieldSet source, IPage page = null)
         {
             return source.GetDateTimeMultiValue(SchemaFieldName);
         }

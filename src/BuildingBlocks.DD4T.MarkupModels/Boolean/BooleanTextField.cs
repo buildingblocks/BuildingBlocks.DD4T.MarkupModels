@@ -20,18 +20,18 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override bool GetValue(IFieldSet fields)
+        public override bool GetValue(IFieldSet fields, IPage page = null)
         {
             string value = fields.GetValue(SchemaFieldName);
             return ParseString(value);
         }
 
-        public override bool GetValue(IComponent source)
+        public override bool GetValue(IComponent source, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<bool> GetMultiValue(IFieldSet source)
+        public override IEnumerable<bool> GetMultiValue(IFieldSet source, IPage page = null)
         {
             var values = source.GetMultiValue(SchemaFieldName);
             return values.Select(ParseString).ToList();

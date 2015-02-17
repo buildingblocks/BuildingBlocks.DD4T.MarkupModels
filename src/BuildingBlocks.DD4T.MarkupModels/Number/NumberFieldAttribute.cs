@@ -16,17 +16,17 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override double GetValue(IFieldSet fields)
+        public override double GetValue(IFieldSet fields, IPage page = null)
         {
             return fields.GetNumberValue(SchemaFieldName);
         }
 
-        public override double GetValue(IComponent fields)
+        public override double GetValue(IComponent fields, IPage page = null)
         {
             return fields.Fields.GetNumberValue(SchemaFieldName);
         }
 
-        public override IEnumerable<double> GetMultiValue(IFieldSet fields)
+        public override IEnumerable<double> GetMultiValue(IFieldSet fields, IPage page = null)
         {
             return fields.GetNumberMultiValue(SchemaFieldName);
         }

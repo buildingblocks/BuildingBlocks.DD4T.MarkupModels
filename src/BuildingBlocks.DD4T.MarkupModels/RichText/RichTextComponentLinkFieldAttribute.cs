@@ -22,22 +22,22 @@ namespace BuildingBlocks.DD4T.MarkupModels
             ComponentFieldName = linkedComponentField;
         }
 
-        public override string GetValue(IFieldSet fields)
+        public override string GetValue(IFieldSet fields, IPage page = null)
         {
             var linkedComponent = fields.GetLinkedComponent(SchemaFieldName);
             if(linkedComponent != null)
             {
-                return linkedComponent.Fields.GetValue(ComponentFieldName).RemoveNamespacesAndWrapInParagraph().ResolveRichText().ToString();
+                return linkedComponent.Fields.GetValue(ComponentFieldName).RemoveNamespacesAndWrapInParagraph().ResolveRichText(page).ToString();
             }
             return string.Empty;
         }
 
-        public override string GetValue(IComponent fields)
+        public override string GetValue(IComponent fields, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<string> GetMultiValue(IFieldSet fields)
+        public override IEnumerable<string> GetMultiValue(IFieldSet fields, IPage page = null)
         {
             var result = new List<string>();
             if (fields.ContainsKey(SchemaFieldName))
@@ -45,7 +45,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
                 foreach(var linkedComponent in fields[SchemaFieldName].LinkedComponentValues)
                 {
                     string value = linkedComponent.Fields.GetValue(ComponentFieldName);
-                    result.Add(value.RemoveNamespacesAndWrapInParagraph().ResolveRichText().ToString());
+                    result.Add(value.RemoveNamespacesAndWrapInParagraph().ResolveRichText(page).ToString());
                 }
             }
             return result;

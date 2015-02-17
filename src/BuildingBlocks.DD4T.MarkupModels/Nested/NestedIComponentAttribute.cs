@@ -18,7 +18,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.Nested
         {
         }
 
-        public override object GetValue(IFieldSet fields)
+        public override object GetValue(IFieldSet fields, IPage page = null)
         {
             var linkedComponent = fields.GetLinkedComponent(SchemaFieldName);
             if (linkedComponent != null)
@@ -28,12 +28,12 @@ namespace BuildingBlocks.DD4T.MarkupModels.Nested
             return null;
         }
 
-        public override object GetValue(IComponent source)
+        public override object GetValue(IComponent source, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<object> GetMultiValue(IFieldSet fields)
+        public override IEnumerable<object> GetMultiValue(IFieldSet fields, IPage page = null)
         {
             var linkedComponents = fields.GetLinkedComponentMultiValue(SchemaFieldName);
 

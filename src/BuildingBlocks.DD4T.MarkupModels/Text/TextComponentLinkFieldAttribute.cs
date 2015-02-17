@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 using BuildingBlocks.DD4T.MarkupModels.ExtensionMethods;
 
@@ -23,17 +22,17 @@ namespace BuildingBlocks.DD4T.MarkupModels
             ComponentFieldName = componentFieldName;
         }
 
-        public override string GetValue(IFieldSet fields)
+        public override string GetValue(IFieldSet fields, IPage page = null)
         {
             return fields.GetComponentLinkedValue(SchemaFieldName, IsLinkedFieldMetadata, ComponentFieldName);
         }
 
-        public override string GetValue(IComponent fields)
+        public override string GetValue(IComponent fields, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<string> GetMultiValue(IFieldSet fields)
+        public override IEnumerable<string> GetMultiValue(IFieldSet fields, IPage page = null)
         {
             return fields.GetComponentLinkedMultiValue(SchemaFieldName, IsLinkedFieldMetadata, ComponentFieldName);
         }

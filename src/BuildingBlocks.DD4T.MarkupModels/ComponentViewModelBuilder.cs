@@ -5,10 +5,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
 {
     public static class ComponentViewModelBuilder
     {
-        public static T Build<T>(IComponent source) where T : new()
+        public static T Build<T>(IComponent source, IPage page = null) where T : new()
         {
             var destinationModel = new T();
-            var obj = (T) FieldSetMapper.Build(source.Fields, source.MetadataFields, destinationModel, source);
+            var obj = (T) FieldSetMapper.Build(source.Fields, source.MetadataFields, destinationModel, source, page);
             if (obj is IComponentBase)
             {
                 obj.GetType().GetProperty("ComponentId").SetValue(obj, source.Id, null);
@@ -17,10 +17,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return obj;
         }
 
-        public static object Build(IComponent source, Type targetType)
+        public static object Build(IComponent source, Type targetType, IPage page = null)
         {
             var destinationModel = Activator.CreateInstance(targetType);
-            var obj = FieldSetMapper.Build(source.Fields, source.MetadataFields, destinationModel, source);
+            var obj = FieldSetMapper.Build(source.Fields, source.MetadataFields, destinationModel, source, page);
             if (obj is IComponentBase)
             {
                 obj.GetType().GetProperty("ComponentId").SetValue(obj, source.Id, null);
@@ -29,10 +29,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return obj;
         }
 
-        internal static object Build(IFieldSet source, Type targetType)
+        internal static object Build(IFieldSet source, Type targetType, IPage page = null)
         {
             var destinationModel = Activator.CreateInstance(targetType);
-            return FieldSetMapper.Build(source, null, destinationModel, null);
+            return FieldSetMapper.Build(source, null, destinationModel, null, page);
         }
     }
 }

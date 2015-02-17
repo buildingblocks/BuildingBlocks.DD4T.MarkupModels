@@ -52,8 +52,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             }
         }
 
-        internal static object Build(IFieldSet sourceFields, IFieldSet sourceMetadataFields, object destinationModel,
-                                     IComponent source)
+        internal static object Build(IFieldSet sourceFields, IFieldSet sourceMetadataFields, object destinationModel, IComponent source, IPage page = null)
         {
             var type = destinationModel.GetType();
             var properties = type.GetProperties();
@@ -79,7 +78,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
                     if (tridionAttribute.SchemaFieldName == String.Empty && source != null)
                     {
                         //Multimedia object or IComponent attribute
-                        TrySetProperty<object>(property, destinationModel, source, tridionAttribute);
+                        TrySetProperty<object>(property, destinationModel, source, tridionAttribute, page);
                     }
                     else
                     {
@@ -101,11 +100,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
             }
         }
 
-        private static void TrySetProperty<T>(PropertyInfo property, object destinationModel, IComponent source,
-                                              ITridionViewModelPropertyAttribute tridionAttribute)
+        private static void TrySetProperty<T>(PropertyInfo property, object destinationModel, IComponent source, ITridionViewModelPropertyAttribute tridionAttribute, IPage page = null)
         {
             T value;
-            if (source != null && TryResolveViewModelProperty(source, tridionAttribute, out value))
+            if (source != null && TryResolveViewModelProperty(source, tridionAttribute, out value, page))
             {
                 property.SetValue(destinationModel, value, null);
             }
@@ -133,39 +131,35 @@ namespace BuildingBlocks.DD4T.MarkupModels
             }
         }
 
-        private static bool TryResolveViewModelProperty<T>(IFieldSet source,
-                                                           ITridionViewModelPropertyAttribute attribute, out T value)
+        private static bool TryResolveViewModelProperty<T>(IFieldSet source, ITridionViewModelPropertyAttribute attribute, out T value, IPage page = null)
         {
             value = default(T);
             var objAttribute = attribute as ITridionViewModelPropertyAttribute<T>;
             if (objAttribute != null)
             {
-                value = objAttribute.GetValue(source);
+                value = objAttribute.GetValue(source, page);
             }
             return objAttribute != null;
         }
 
-        private static bool TryResolveViewModelProperty<T>(IComponent source,
-                                                           ITridionViewModelPropertyAttribute attribute, out T value)
+        private static bool TryResolveViewModelProperty<T>(IComponent source, ITridionViewModelPropertyAttribute attribute, out T value, IPage page = null)
         {
             value = default(T);
             var objAttribute = attribute as ITridionViewModelPropertyAttribute<T>;
             if (objAttribute != null)
             {
-                value = objAttribute.GetValue(source);
+                value = objAttribute.GetValue(source, page);
             }
             return objAttribute != null;
         }
 
-        private static bool TryResolveMultiValueViewModelProperty<T>(IFieldSet source,
-                                                                     ITridionViewModelPropertyAttribute attribute,
-                                                                     out IEnumerable<T> values)
+        private static bool TryResolveMultiValueViewModelProperty<T>(IFieldSet source, ITridionViewModelPropertyAttribute attribute, out IEnumerable<T> values, IPage page = null)
         {
             values = null;
             var objAttribute = attribute as ITridionViewModelPropertyAttribute<T>;
             if (objAttribute != null)
             {
-                values = objAttribute.GetMultiValue(source);
+                values = objAttribute.GetMultiValue(source, page);
             }
             return objAttribute != null;
         }

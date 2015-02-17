@@ -15,7 +15,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
         {
         }
 
-        public override object GetValue(IFieldSet fields)
+        public override object GetValue(IFieldSet fields, IPage page = null)
         {
             var linkedKeyword = fields.GetLinkedKeyword(SchemaFieldName);
             if (linkedKeyword != null)
@@ -25,12 +25,12 @@ namespace BuildingBlocks.DD4T.MarkupModels
             return null;
         }
 
-        public override object GetValue(IComponent fields)
+        public override object GetValue(IComponent fields, IPage page = null)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<object> GetMultiValue(IFieldSet fields)
+        public override IEnumerable<object> GetMultiValue(IFieldSet fields, IPage page = null)
         {
             var linkedKeywords = fields.GetLinkedKeywordMultiValue(SchemaFieldName);
 

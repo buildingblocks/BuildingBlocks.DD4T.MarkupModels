@@ -189,8 +189,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
             return default(double);
         }
 
-        public static double GetComponentLinkedNumberValue(this IFieldSet fields, string schemaFieldName, bool isLinkedFieldMetadata,
-                                                           string componentFieldName)
+        public static double GetComponentLinkedNumberValue(this IFieldSet fields, string schemaFieldName, bool isLinkedFieldMetadata, string componentFieldName)
         {
             if (fields.ContainsKey(schemaFieldName))
             {
