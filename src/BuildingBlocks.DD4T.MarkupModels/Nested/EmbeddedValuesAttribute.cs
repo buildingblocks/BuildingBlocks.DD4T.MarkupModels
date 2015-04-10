@@ -23,7 +23,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.Nested
             var embeddedFieldSet = fields.GetEmbeddedFieldSet(SchemaFieldName);
             if (embeddedFieldSet != null)
             {
-                return ComponentViewModelBuilder.Build(embeddedFieldSet, TargetType);
+                return ComponentViewModelBuilder.Build(embeddedFieldSet, TargetType, page);
             }
             return null;
         }
@@ -37,7 +37,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.Nested
         {
             var embeddedFieldSets = fields.GetEmbeddedFieldSetMultiValue(SchemaFieldName);
 
-            return embeddedFieldSets.Select(fieldSet => ComponentViewModelBuilder.Build(fieldSet, TargetType));
+            return embeddedFieldSets.Select(fieldSet => ComponentViewModelBuilder.Build(fieldSet, TargetType, page));
         }
     }
 }

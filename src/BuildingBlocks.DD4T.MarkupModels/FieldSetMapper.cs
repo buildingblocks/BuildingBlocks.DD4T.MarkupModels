@@ -8,7 +8,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
 {
     internal static class FieldSetMapper
     {
-        internal static object Build(IFieldSet fields, object destinationModel, IKeyword source)
+        internal static object Build(IFieldSet fields, object destinationModel, IKeyword source, IPage page = null)
         {
             var type = destinationModel.GetType();
             var properties = type.GetProperties();
@@ -24,31 +24,30 @@ namespace BuildingBlocks.DD4T.MarkupModels
                         continue;
                     }
 
-                    TrySetAllValues(fields, destinationModel, tridionAttribute, property);
+                    TrySetAllValues(fields, destinationModel, tridionAttribute, property, page);
                 }
             }
 
             return destinationModel;
         }
 
-        private static void TrySetAllValues(IFieldSet fields, object destinationModel, ITridionViewModelPropertyAttribute tridionAttribute,
-                                            PropertyInfo property)
+        private static void TrySetAllValues(IFieldSet fields, object destinationModel, ITridionViewModelPropertyAttribute tridionAttribute, PropertyInfo property, IPage page = null)
         {
             if (tridionAttribute.IsMultiValue)
             {
-                TrySetMultiValueProperty<double>(property, destinationModel, fields, tridionAttribute);
-                TrySetMultiValueProperty<bool>(property, destinationModel, fields, tridionAttribute);
-                TrySetMultiValueProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
-                TrySetMultiValueProperty<string>(property, destinationModel, fields, tridionAttribute);
-                TrySetMultiValueProperty<object>(property, destinationModel, fields, tridionAttribute);
+                TrySetMultiValueProperty<double>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetMultiValueProperty<bool>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetMultiValueProperty<DateTime>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetMultiValueProperty<string>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetMultiValueProperty<object>(property, destinationModel, fields, tridionAttribute, page);
             }
             else
             {
-                TrySetProperty<double>(property, destinationModel, fields, tridionAttribute);
-                TrySetProperty<bool>(property, destinationModel, fields, tridionAttribute);
-                TrySetProperty<DateTime>(property, destinationModel, fields, tridionAttribute);
-                TrySetProperty<string>(property, destinationModel, fields, tridionAttribute);
-                TrySetProperty<object>(property, destinationModel, fields, tridionAttribute);
+                TrySetProperty<double>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetProperty<bool>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetProperty<DateTime>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetProperty<string>(property, destinationModel, fields, tridionAttribute, page);
+                TrySetProperty<object>(property, destinationModel, fields, tridionAttribute, page);
             }
         }
 
@@ -82,7 +81,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
                     }
                     else
                     {
-                        TrySetAllValues(fields, destinationModel, tridionAttribute, property);
+                        TrySetAllValues(fields, destinationModel, tridionAttribute, property, page);
                     }
                 }
             }
@@ -91,10 +90,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
         }
 
         private static void TrySetProperty<T>(PropertyInfo property, object destinationModel, IFieldSet source,
-                                              ITridionViewModelPropertyAttribute tridionAttribute)
+                                              ITridionViewModelPropertyAttribute tridionAttribute, IPage page = null)
         {
             T value;
-            if (source != null && TryResolveViewModelProperty(source, tridionAttribute, out value))
+            if (source != null && TryResolveViewModelProperty(source, tridionAttribute, out value, page))
             {
                 property.SetValue(destinationModel, value, null);
             }
@@ -110,10 +109,10 @@ namespace BuildingBlocks.DD4T.MarkupModels
         }
 
         private static void TrySetMultiValueProperty<T>(PropertyInfo property, object destinationModel, IFieldSet source,
-                                                        ITridionViewModelPropertyAttribute tridionAttribute)
+                                                        ITridionViewModelPropertyAttribute tridionAttribute, IPage page = null)
         {
             IEnumerable<T> value;
-            if (source != null && TryResolveMultiValueViewModelProperty(source, tridionAttribute, out value))
+            if (source != null && TryResolveMultiValueViewModelProperty(source, tridionAttribute, out value, page))
             {
                 if (tridionAttribute is BaseNestedTridionViewModelPropertyAttribute)
                 {

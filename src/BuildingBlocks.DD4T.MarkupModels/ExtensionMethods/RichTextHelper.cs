@@ -67,7 +67,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
                         nsmgr))
             {
                 string tcmuri = link.Attributes["xlink:href"].Value;
-                string linkUrl = page != null ? LinkFactory.ResolveLink(page.Id, tcmuri, null) : LinkFactory.ResolveLink(tcmuri);
+                string linkUrl = page != null ? LinkFactory.ResolveLink(page.Id, tcmuri, "") : LinkFactory.ResolveLink(tcmuri);
 
                 if (!string.IsNullOrEmpty(linkUrl))
                 {
