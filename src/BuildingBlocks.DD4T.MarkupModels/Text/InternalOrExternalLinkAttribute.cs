@@ -32,7 +32,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             {
                 var linkProvider = DependencyResolver.Current.GetService<ILinkProvider>();
 
-                if (linkProvider != null) link = page != null ? linkProvider.ResolveLink(page.Id, internalLink.Id, null) : linkProvider.ResolveLink(internalLink.Id);
+                if (linkProvider != null) link = page != null ? linkProvider.ResolveLink(page.Id, internalLink.Id, "") : linkProvider.ResolveLink(internalLink.Id);
             }
             else
             {
@@ -55,7 +55,7 @@ namespace BuildingBlocks.DD4T.MarkupModels
             if (internalLinks.Any())
             {
                 var linkProvider = DependencyResolver.Current.GetService<ILinkProvider>();
-                return internalLinks.Select(internalLink => page != null ? linkProvider.ResolveLink(page.Id, internalLink.Id, null) : linkProvider.ResolveLink(internalLink.Id));
+                return internalLinks.Select(internalLink => page != null ? linkProvider.ResolveLink(page.Id, internalLink.Id, "") : linkProvider.ResolveLink(internalLink.Id));
             }
 
             return source.GetMultiValue(SchemaFieldName);
