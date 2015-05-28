@@ -119,10 +119,7 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
         }
 
         private static MvcHtmlString GetInlineEditableMarkupInternal<T, TP>(HtmlHelper helper, Expression<Func<T, TP>> fieldSelector, int index)
-        {
-            if (!SiteEditService.SiteEditSettings.Enabled)
-                return new MvcHtmlString(string.Empty);
-            
+        {          
             var componentPresentation = GetComponentPresentation(helper);
 
             if (componentPresentation != null)
