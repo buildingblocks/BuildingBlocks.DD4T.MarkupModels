@@ -87,13 +87,13 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         private static MvcHtmlString InlineEditableInternal<T,TP>(this HtmlHelper helper, T model, Expression<Func<T, TP>> fieldSelector, int index)
         {
-            if (!SiteEditService.SiteEditSettings.Enabled)
-                return new MvcHtmlString(string.Empty);
-
             Func<T, TP> compiledFieldSelector = fieldSelector.Compile();
             TP value = compiledFieldSelector(model);
             var sb = new StringBuilder();
-            sb.Append(GetInlineEditableMarkupInternal(helper, fieldSelector, index));
+            if (SiteEditService.SiteEditSettings.Enabled)
+            {
+                sb.Append(GetInlineEditableMarkupInternal(helper, fieldSelector, index));
+            }
             sb.Append(value);
             return new MvcHtmlString(sb.ToString());
         }
