@@ -19,9 +19,6 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
     {
         public static MvcHtmlString MarkComponentPresentationInlineEditable(this HtmlHelper helper)
         {
-            if (!SiteEditService.SiteEditSettings.Enabled)
-                return new MvcHtmlString(string.Empty);
-
             var componentPresentation = GetComponentPresentation(helper);
                 
             if(componentPresentation != null)
@@ -34,9 +31,6 @@ namespace BuildingBlocks.DD4T.MarkupModels.ExtensionMethods
 
         public static MvcHtmlString MarkComponentPresentationInlineEditable<T>(this HtmlHelper helper, T model, int index)
         {
-            if(!SiteEditService.SiteEditSettings.Enabled)
-                return new MvcHtmlString(string.Empty);
-
             var attribute = (TridionViewModelAttribute)model.GetType().GetCustomAttributes(typeof(TridionViewModelAttribute), true).FirstOrDefault();
             if (attribute != null && !String.IsNullOrEmpty(attribute.ParentLinkFieldName) &&
                 attribute.ParentLinkType != ParentLinkType.Multimedia)
